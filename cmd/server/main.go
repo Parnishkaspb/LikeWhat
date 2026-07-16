@@ -9,8 +9,10 @@ import (
 	"syscall"
 	"time"
 
-	ideasv1 "github.com/example/ideas-grpc-service/gen/ideas/v1"
-	"github.com/example/ideas-grpc-service/internal/service"
+	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/tobacco/repository"
+	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/tobacco/service"
+	transportgrpc "github.com/Parnishkaspb/LikeWhat/internal/likewhat/tobacco/transport/grpc"
+	likewhat "github.com/Parnishkaspb/LikeWhat/pkg/like_what"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
 	grpc_health_v1 "google.golang.org/grpc/health/grpc_health_v1"
@@ -28,7 +30,8 @@ func main() {
 	}
 
 	server := grpc.NewServer()
-	ideasv1.RegisterIdeaServiceServer(server, service.NewIdeaServer())
+	tobaccoService := service.NewTobaccoService(repository.NewMemory())
+	likewhat.RegisterTobaccoServiceServer(server, transportgrpc.NewServer(tobaccoService))
 	grpc_health_v1.RegisterHealthServer(server, health.NewServer())
 
 	go func() {

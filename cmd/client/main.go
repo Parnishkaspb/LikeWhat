@@ -7,15 +7,16 @@ import (
 	"log"
 	"time"
 
-	ideasv1 "github.com/example/ideas-grpc-service/gen/ideas/v1"
+	likewhat "github.com/Parnishkaspb/LikeWhat/pkg/like_what"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
 
 func main() {
 	address := flag.String("addr", "localhost:50051", "gRPC server address")
-	title := flag.String("title", "gRPC migration", "idea title")
-	description := flag.String("description", "Replace the HTTP transport with gRPC", "idea description")
+	taste := flag.String("taste", "vanilla", "tobacco taste")
+	photo := flag.String("photo", "", "photo URL")
+	manufactureID := flag.String("manufacture-id", "manufacturer-1", "manufacture identifier")
 	flag.Parse()
 
 	conn, err := grpc.NewClient(*address, grpc.WithTransportCredentials(insecure.NewCredentials()))
@@ -24,21 +25,25 @@ func main() {
 	}
 	defer conn.Close()
 
-	client := ideasv1.NewIdeaServiceClient(conn)
+	client := likewhat.NewTobaccoServiceClient(conn)
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	created, err := client.CreateIdea(ctx, &ideasv1.CreateIdeaRequest{Title: *title, Description: *description})
+	created, err := client.CreateTobacco(ctx, &likewhat.CreateTobaccoRequest{
+		Taste:         *taste,
+		Photo:         *photo,
+		ManufactureId: *manufactureID,
+	})
 	if err != nil {
-		log.Fatalf("create idea: %v", err)
+		log.Fatalf("create tobacco: %v", err)
 	}
-	fmt.Printf("created: %s — %s\n", created.GetId(), created.GetTitle())
+	fmt.Printf("created: %s — %s\n", created.GetId(), created.GetTaste())
 
-	ideas, err := client.ListIdeas(ctx, &ideasv1.ListIdeasRequest{})
+	tobaccos, err := client.ListTobaccos(ctx, &likewhat.ListTobaccosRequest{})
 	if err != nil {
-		log.Fatalf("list ideas: %v", err)
+		log.Fatalf("list tobaccos: %v", err)
 	}
-	for _, idea := range ideas.GetIdeas() {
-		fmt.Printf("%s | %s | %s\n", idea.GetId(), idea.GetTitle(), idea.GetDescription())
+	for _, tobacco := range tobaccos.GetTobaccos() {
+		fmt.Printf("%s | %s | %s\n", tobacco.GetId(), tobacco.GetTaste(), tobacco.GetManufacture().GetId())
 	}
 }
