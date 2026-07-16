@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package likewhat;
+
+option go_package = "https://github.com/Parnishkaspb/like_what/api/like_what;likewhat";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+// IdeaService manages a collection of product ideas.
+service IdeaService {
+  rpc CreateIdea(CreateIdeaRequest) returns (Idea);
+  rpc GetIdea(GetIdeaRequest) returns (Idea);
+  rpc ListIdeas(ListIdeasRequest) returns (ListIdeasResponse);
+  rpc UpdateIdea(UpdateIdeaRequest) returns (Idea);
+  rpc DeleteIdea(DeleteIdeaRequest) returns (google.protobuf.Empty);
+}
+
+message Idea {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+  google.protobuf.Timestamp created_at = 4;
+  google.protobuf.Timestamp updated_at = 5;
+}
+
+message CreateIdeaRequest {
+  string title = 1;
+  string description = 2;
+}
+
+message GetIdeaRequest {
+  string id = 1;
+}
+
+message ListIdeasRequest {}
+
+message ListIdeasResponse {
+  repeated Idea ideas = 1;
+}
+
+message UpdateIdeaRequest {
+  string id = 1;
+  string title = 2;
+  string description = 3;
+}
+
+message DeleteIdeaRequest {
+  string id = 1;
+}
