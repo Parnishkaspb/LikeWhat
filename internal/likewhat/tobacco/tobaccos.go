@@ -1,12 +1,10 @@
 package tobacco
 
-import "time"
+import (
+	"time"
 
-// Manufacture identifies the producer of a tobacco product.
-type Manufacture struct {
-	ID   string
-	Name string
-}
+	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/manufacture"
+)
 
 // Tobacco is the domain model. It deliberately does not depend on protobuf.
 type Tobacco struct {
@@ -14,7 +12,7 @@ type Tobacco struct {
 	Taste       string
 	Proto       string
 	Photo       string
-	Manufacture Manufacture
+	Manufacture manufacture.Manufacture
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   *time.Time
