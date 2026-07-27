@@ -174,58 +174,6 @@ func (x *CreateTobaccoRequest) GetManufactureId() string {
 	return ""
 }
 
-type Manufacture struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Manufacture) Reset() {
-	*x = Manufacture{}
-	mi := &file_api_like_what_like_what_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Manufacture) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Manufacture) ProtoMessage() {}
-
-func (x *Manufacture) ProtoReflect() protoreflect.Message {
-	mi := &file_api_like_what_like_what_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Manufacture.ProtoReflect.Descriptor instead.
-func (*Manufacture) Descriptor() ([]byte, []int) {
-	return file_api_like_what_like_what_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *Manufacture) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *Manufacture) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
 type GetTobaccoRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -235,7 +183,7 @@ type GetTobaccoRequest struct {
 
 func (x *GetTobaccoRequest) Reset() {
 	*x = GetTobaccoRequest{}
-	mi := &file_api_like_what_like_what_proto_msgTypes[3]
+	mi := &file_api_like_what_like_what_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -247,7 +195,7 @@ func (x *GetTobaccoRequest) String() string {
 func (*GetTobaccoRequest) ProtoMessage() {}
 
 func (x *GetTobaccoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_like_what_like_what_proto_msgTypes[3]
+	mi := &file_api_like_what_like_what_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -260,7 +208,7 @@ func (x *GetTobaccoRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTobaccoRequest.ProtoReflect.Descriptor instead.
 func (*GetTobaccoRequest) Descriptor() ([]byte, []int) {
-	return file_api_like_what_like_what_proto_rawDescGZIP(), []int{3}
+	return file_api_like_what_like_what_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *GetTobaccoRequest) GetId() string {
@@ -280,7 +228,7 @@ type ListTobaccosRequest struct {
 
 func (x *ListTobaccosRequest) Reset() {
 	*x = ListTobaccosRequest{}
-	mi := &file_api_like_what_like_what_proto_msgTypes[4]
+	mi := &file_api_like_what_like_what_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -292,7 +240,7 @@ func (x *ListTobaccosRequest) String() string {
 func (*ListTobaccosRequest) ProtoMessage() {}
 
 func (x *ListTobaccosRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_like_what_like_what_proto_msgTypes[4]
+	mi := &file_api_like_what_like_what_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -305,7 +253,7 @@ func (x *ListTobaccosRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTobaccosRequest.ProtoReflect.Descriptor instead.
 func (*ListTobaccosRequest) Descriptor() ([]byte, []int) {
-	return file_api_like_what_like_what_proto_rawDescGZIP(), []int{4}
+	return file_api_like_what_like_what_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListTobaccosRequest) GetTaste() string {
@@ -331,7 +279,7 @@ type ListTobaccosResponse struct {
 
 func (x *ListTobaccosResponse) Reset() {
 	*x = ListTobaccosResponse{}
-	mi := &file_api_like_what_like_what_proto_msgTypes[5]
+	mi := &file_api_like_what_like_what_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -343,7 +291,7 @@ func (x *ListTobaccosResponse) String() string {
 func (*ListTobaccosResponse) ProtoMessage() {}
 
 func (x *ListTobaccosResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_like_what_like_what_proto_msgTypes[5]
+	mi := &file_api_like_what_like_what_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -356,12 +304,430 @@ func (x *ListTobaccosResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTobaccosResponse.ProtoReflect.Descriptor instead.
 func (*ListTobaccosResponse) Descriptor() ([]byte, []int) {
-	return file_api_like_what_like_what_proto_rawDescGZIP(), []int{5}
+	return file_api_like_what_like_what_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ListTobaccosResponse) GetTobaccos() []*Tobacco {
 	if x != nil {
 		return x.Tobaccos
+	}
+	return nil
+}
+
+type CreateManufactureRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateManufactureRequest) Reset() {
+	*x = CreateManufactureRequest{}
+	mi := &file_api_like_what_like_what_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateManufactureRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateManufactureRequest) ProtoMessage() {}
+
+func (x *CreateManufactureRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_like_what_like_what_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateManufactureRequest.ProtoReflect.Descriptor instead.
+func (*CreateManufactureRequest) Descriptor() ([]byte, []int) {
+	return file_api_like_what_like_what_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *CreateManufactureRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type Manufacture struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Manufacture) Reset() {
+	*x = Manufacture{}
+	mi := &file_api_like_what_like_what_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Manufacture) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Manufacture) ProtoMessage() {}
+
+func (x *Manufacture) ProtoReflect() protoreflect.Message {
+	mi := &file_api_like_what_like_what_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Manufacture.ProtoReflect.Descriptor instead.
+func (*Manufacture) Descriptor() ([]byte, []int) {
+	return file_api_like_what_like_what_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *Manufacture) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *Manufacture) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type ListManufactureRequest struct {
+	state         protoimpl.MessageState         `protogen:"open.v1"`
+	Filter        *ListManufactureRequest_Filter `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	PerPage       uint64                         `protobuf:"varint,2,opt,name=per_page,json=perPage,proto3" json:"per_page,omitempty"`
+	Page          uint64                         `protobuf:"varint,3,opt,name=page,proto3" json:"page,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListManufactureRequest) Reset() {
+	*x = ListManufactureRequest{}
+	mi := &file_api_like_what_like_what_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListManufactureRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListManufactureRequest) ProtoMessage() {}
+
+func (x *ListManufactureRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_like_what_like_what_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListManufactureRequest.ProtoReflect.Descriptor instead.
+func (*ListManufactureRequest) Descriptor() ([]byte, []int) {
+	return file_api_like_what_like_what_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *ListManufactureRequest) GetFilter() *ListManufactureRequest_Filter {
+	if x != nil {
+		return x.Filter
+	}
+	return nil
+}
+
+func (x *ListManufactureRequest) GetPerPage() uint64 {
+	if x != nil {
+		return x.PerPage
+	}
+	return 0
+}
+
+func (x *ListManufactureRequest) GetPage() uint64 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+type ListManufactureRespone struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Manufactures  []*Manufacture         `protobuf:"bytes,1,rep,name=manufactures,proto3" json:"manufactures,omitempty"`
+	TotalCount    uint64                 `protobuf:"varint,2,opt,name=total_count,json=totalCount,proto3" json:"total_count,omitempty"`
+	NextPage      bool                   `protobuf:"varint,3,opt,name=next_page,json=nextPage,proto3" json:"next_page,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListManufactureRespone) Reset() {
+	*x = ListManufactureRespone{}
+	mi := &file_api_like_what_like_what_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListManufactureRespone) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListManufactureRespone) ProtoMessage() {}
+
+func (x *ListManufactureRespone) ProtoReflect() protoreflect.Message {
+	mi := &file_api_like_what_like_what_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListManufactureRespone.ProtoReflect.Descriptor instead.
+func (*ListManufactureRespone) Descriptor() ([]byte, []int) {
+	return file_api_like_what_like_what_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *ListManufactureRespone) GetManufactures() []*Manufacture {
+	if x != nil {
+		return x.Manufactures
+	}
+	return nil
+}
+
+func (x *ListManufactureRespone) GetTotalCount() uint64 {
+	if x != nil {
+		return x.TotalCount
+	}
+	return 0
+}
+
+func (x *ListManufactureRespone) GetNextPage() bool {
+	if x != nil {
+		return x.NextPage
+	}
+	return false
+}
+
+type EditManufactureRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ManufactureId string                 `protobuf:"bytes,1,opt,name=manufacture_id,json=manufactureId,proto3" json:"manufacture_id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EditManufactureRequest) Reset() {
+	*x = EditManufactureRequest{}
+	mi := &file_api_like_what_like_what_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EditManufactureRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EditManufactureRequest) ProtoMessage() {}
+
+func (x *EditManufactureRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_like_what_like_what_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EditManufactureRequest.ProtoReflect.Descriptor instead.
+func (*EditManufactureRequest) Descriptor() ([]byte, []int) {
+	return file_api_like_what_like_what_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *EditManufactureRequest) GetManufactureId() string {
+	if x != nil {
+		return x.ManufactureId
+	}
+	return ""
+}
+
+func (x *EditManufactureRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type DeleteManufactureRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ManufactureId string                 `protobuf:"bytes,1,opt,name=manufacture_id,json=manufactureId,proto3" json:"manufacture_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteManufactureRequest) Reset() {
+	*x = DeleteManufactureRequest{}
+	mi := &file_api_like_what_like_what_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteManufactureRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteManufactureRequest) ProtoMessage() {}
+
+func (x *DeleteManufactureRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_like_what_like_what_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteManufactureRequest.ProtoReflect.Descriptor instead.
+func (*DeleteManufactureRequest) Descriptor() ([]byte, []int) {
+	return file_api_like_what_like_what_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *DeleteManufactureRequest) GetManufactureId() string {
+	if x != nil {
+		return x.ManufactureId
+	}
+	return ""
+}
+
+type DeleteManufactureResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IsDeleted     bool                   `protobuf:"varint,1,opt,name=is_deleted,json=isDeleted,proto3" json:"is_deleted,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteManufactureResponse) Reset() {
+	*x = DeleteManufactureResponse{}
+	mi := &file_api_like_what_like_what_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteManufactureResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteManufactureResponse) ProtoMessage() {}
+
+func (x *DeleteManufactureResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_like_what_like_what_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteManufactureResponse.ProtoReflect.Descriptor instead.
+func (*DeleteManufactureResponse) Descriptor() ([]byte, []int) {
+	return file_api_like_what_like_what_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *DeleteManufactureResponse) GetIsDeleted() bool {
+	if x != nil {
+		return x.IsDeleted
+	}
+	return false
+}
+
+func (x *DeleteManufactureResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+type ListManufactureRequest_Filter struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Наименование производителя поиск
+	NameLike string `protobuf:"bytes,1,opt,name=name_like,json=nameLike,proto3" json:"name_like,omitempty"`
+	// Поиск по идентификатору
+	IdsIn         []string `protobuf:"bytes,2,rep,name=ids_in,json=idsIn,proto3" json:"ids_in,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListManufactureRequest_Filter) Reset() {
+	*x = ListManufactureRequest_Filter{}
+	mi := &file_api_like_what_like_what_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListManufactureRequest_Filter) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListManufactureRequest_Filter) ProtoMessage() {}
+
+func (x *ListManufactureRequest_Filter) ProtoReflect() protoreflect.Message {
+	mi := &file_api_like_what_like_what_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListManufactureRequest_Filter.ProtoReflect.Descriptor instead.
+func (*ListManufactureRequest_Filter) Descriptor() ([]byte, []int) {
+	return file_api_like_what_like_what_proto_rawDescGZIP(), []int{7, 0}
+}
+
+func (x *ListManufactureRequest_Filter) GetNameLike() string {
+	if x != nil {
+		return x.NameLike
+	}
+	return ""
+}
+
+func (x *ListManufactureRequest_Filter) GetIdsIn() []string {
+	if x != nil {
+		return x.IdsIn
 	}
 	return nil
 }
@@ -385,22 +751,50 @@ const file_api_like_what_like_what_proto_rawDesc = "" +
 	"\x14CreateTobaccoRequest\x12\x14\n" +
 	"\x05taste\x18\x01 \x01(\tR\x05taste\x12\x14\n" +
 	"\x05photo\x18\x02 \x01(\tR\x05photo\x12%\n" +
-	"\x0emanufacture_id\x18\x03 \x01(\tR\rmanufactureId\"1\n" +
-	"\vManufacture\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\"#\n" +
+	"\x0emanufacture_id\x18\x03 \x01(\tR\rmanufactureId\"#\n" +
 	"\x11GetTobaccoRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\"R\n" +
 	"\x13ListTobaccosRequest\x12\x14\n" +
 	"\x05taste\x18\x01 \x01(\tR\x05taste\x12%\n" +
 	"\x0emanufacture_id\x18\x02 \x03(\tR\rmanufactureId\"E\n" +
 	"\x14ListTobaccosResponse\x12-\n" +
-	"\btobaccos\x18\x01 \x03(\v2\x11.likewhat.TobaccoR\btobaccos2\xe1\x01\n" +
+	"\btobaccos\x18\x01 \x03(\v2\x11.likewhat.TobaccoR\btobaccos\".\n" +
+	"\x18CreateManufactureRequest\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\"1\n" +
+	"\vManufacture\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\"\xc6\x01\n" +
+	"\x16ListManufactureRequest\x12?\n" +
+	"\x06filter\x18\x01 \x01(\v2'.likewhat.ListManufactureRequest.FilterR\x06filter\x12\x19\n" +
+	"\bper_page\x18\x02 \x01(\x04R\aperPage\x12\x12\n" +
+	"\x04page\x18\x03 \x01(\x04R\x04page\x1a<\n" +
+	"\x06Filter\x12\x1b\n" +
+	"\tname_like\x18\x01 \x01(\tR\bnameLike\x12\x15\n" +
+	"\x06ids_in\x18\x02 \x03(\tR\x05idsIn\"\x91\x01\n" +
+	"\x16ListManufactureRespone\x129\n" +
+	"\fmanufactures\x18\x01 \x03(\v2\x15.likewhat.ManufactureR\fmanufactures\x12\x1f\n" +
+	"\vtotal_count\x18\x02 \x01(\x04R\n" +
+	"totalCount\x12\x1b\n" +
+	"\tnext_page\x18\x03 \x01(\bR\bnextPage\"S\n" +
+	"\x16EditManufactureRequest\x12%\n" +
+	"\x0emanufacture_id\x18\x01 \x01(\tR\rmanufactureId\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\"A\n" +
+	"\x18DeleteManufactureRequest\x12%\n" +
+	"\x0emanufacture_id\x18\x01 \x01(\tR\rmanufactureId\"T\n" +
+	"\x19DeleteManufactureResponse\x12\x1d\n" +
+	"\n" +
+	"is_deleted\x18\x01 \x01(\bR\tisDeleted\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage2\xe1\x01\n" +
 	"\x0eTobaccoService\x12B\n" +
 	"\rCreateTobacco\x12\x1e.likewhat.CreateTobaccoRequest\x1a\x11.likewhat.Tobacco\x12<\n" +
 	"\n" +
 	"GetTobacco\x12\x1b.likewhat.GetTobaccoRequest\x1a\x11.likewhat.Tobacco\x12M\n" +
-	"\fListTobaccos\x12\x1d.likewhat.ListTobaccosRequest\x1a\x1e.likewhat.ListTobaccosResponseB9Z7github.com/Parnishkaspb/LikeWhat/pkg/like_what;likewhatb\x06proto3"
+	"\fListTobaccos\x12\x1d.likewhat.ListTobaccosRequest\x1a\x1e.likewhat.ListTobaccosResponse2\xe6\x02\n" +
+	"\x12ManufactureService\x12N\n" +
+	"\x11CreateManufacture\x12\".likewhat.CreateManufactureRequest\x1a\x15.likewhat.Manufacture\x12V\n" +
+	"\x10ListManufactures\x12 .likewhat.ListManufactureRequest\x1a .likewhat.ListManufactureRespone\x12J\n" +
+	"\x0fEditManufacture\x12 .likewhat.EditManufactureRequest\x1a\x15.likewhat.Manufacture\x12\\\n" +
+	"\x11DeleteManufacture\x12\".likewhat.DeleteManufactureRequest\x1a#.likewhat.DeleteManufactureResponseB9Z7github.com/Parnishkaspb/LikeWhat/pkg/like_what;likewhatb\x06proto3"
 
 var (
 	file_api_like_what_like_what_proto_rawDescOnce sync.Once
@@ -414,33 +808,50 @@ func file_api_like_what_like_what_proto_rawDescGZIP() []byte {
 	return file_api_like_what_like_what_proto_rawDescData
 }
 
-var file_api_like_what_like_what_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_api_like_what_like_what_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_api_like_what_like_what_proto_goTypes = []any{
-	(*Tobacco)(nil),               // 0: likewhat.Tobacco
-	(*CreateTobaccoRequest)(nil),  // 1: likewhat.CreateTobaccoRequest
-	(*Manufacture)(nil),           // 2: likewhat.Manufacture
-	(*GetTobaccoRequest)(nil),     // 3: likewhat.GetTobaccoRequest
-	(*ListTobaccosRequest)(nil),   // 4: likewhat.ListTobaccosRequest
-	(*ListTobaccosResponse)(nil),  // 5: likewhat.ListTobaccosResponse
-	(*timestamppb.Timestamp)(nil), // 6: google.protobuf.Timestamp
+	(*Tobacco)(nil),                       // 0: likewhat.Tobacco
+	(*CreateTobaccoRequest)(nil),          // 1: likewhat.CreateTobaccoRequest
+	(*GetTobaccoRequest)(nil),             // 2: likewhat.GetTobaccoRequest
+	(*ListTobaccosRequest)(nil),           // 3: likewhat.ListTobaccosRequest
+	(*ListTobaccosResponse)(nil),          // 4: likewhat.ListTobaccosResponse
+	(*CreateManufactureRequest)(nil),      // 5: likewhat.CreateManufactureRequest
+	(*Manufacture)(nil),                   // 6: likewhat.Manufacture
+	(*ListManufactureRequest)(nil),        // 7: likewhat.ListManufactureRequest
+	(*ListManufactureRespone)(nil),        // 8: likewhat.ListManufactureRespone
+	(*EditManufactureRequest)(nil),        // 9: likewhat.EditManufactureRequest
+	(*DeleteManufactureRequest)(nil),      // 10: likewhat.DeleteManufactureRequest
+	(*DeleteManufactureResponse)(nil),     // 11: likewhat.DeleteManufactureResponse
+	(*ListManufactureRequest_Filter)(nil), // 12: likewhat.ListManufactureRequest.Filter
+	(*timestamppb.Timestamp)(nil),         // 13: google.protobuf.Timestamp
 }
 var file_api_like_what_like_what_proto_depIdxs = []int32{
-	2, // 0: likewhat.Tobacco.manufacture:type_name -> likewhat.Manufacture
-	6, // 1: likewhat.Tobacco.created_at:type_name -> google.protobuf.Timestamp
-	6, // 2: likewhat.Tobacco.updated_at:type_name -> google.protobuf.Timestamp
-	6, // 3: likewhat.Tobacco.deleted_at:type_name -> google.protobuf.Timestamp
-	0, // 4: likewhat.ListTobaccosResponse.tobaccos:type_name -> likewhat.Tobacco
-	1, // 5: likewhat.TobaccoService.CreateTobacco:input_type -> likewhat.CreateTobaccoRequest
-	3, // 6: likewhat.TobaccoService.GetTobacco:input_type -> likewhat.GetTobaccoRequest
-	4, // 7: likewhat.TobaccoService.ListTobaccos:input_type -> likewhat.ListTobaccosRequest
-	0, // 8: likewhat.TobaccoService.CreateTobacco:output_type -> likewhat.Tobacco
-	0, // 9: likewhat.TobaccoService.GetTobacco:output_type -> likewhat.Tobacco
-	5, // 10: likewhat.TobaccoService.ListTobaccos:output_type -> likewhat.ListTobaccosResponse
-	8, // [8:11] is the sub-list for method output_type
-	5, // [5:8] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	6,  // 0: likewhat.Tobacco.manufacture:type_name -> likewhat.Manufacture
+	13, // 1: likewhat.Tobacco.created_at:type_name -> google.protobuf.Timestamp
+	13, // 2: likewhat.Tobacco.updated_at:type_name -> google.protobuf.Timestamp
+	13, // 3: likewhat.Tobacco.deleted_at:type_name -> google.protobuf.Timestamp
+	0,  // 4: likewhat.ListTobaccosResponse.tobaccos:type_name -> likewhat.Tobacco
+	12, // 5: likewhat.ListManufactureRequest.filter:type_name -> likewhat.ListManufactureRequest.Filter
+	6,  // 6: likewhat.ListManufactureRespone.manufactures:type_name -> likewhat.Manufacture
+	1,  // 7: likewhat.TobaccoService.CreateTobacco:input_type -> likewhat.CreateTobaccoRequest
+	2,  // 8: likewhat.TobaccoService.GetTobacco:input_type -> likewhat.GetTobaccoRequest
+	3,  // 9: likewhat.TobaccoService.ListTobaccos:input_type -> likewhat.ListTobaccosRequest
+	5,  // 10: likewhat.ManufactureService.CreateManufacture:input_type -> likewhat.CreateManufactureRequest
+	7,  // 11: likewhat.ManufactureService.ListManufactures:input_type -> likewhat.ListManufactureRequest
+	9,  // 12: likewhat.ManufactureService.EditManufacture:input_type -> likewhat.EditManufactureRequest
+	10, // 13: likewhat.ManufactureService.DeleteManufacture:input_type -> likewhat.DeleteManufactureRequest
+	0,  // 14: likewhat.TobaccoService.CreateTobacco:output_type -> likewhat.Tobacco
+	0,  // 15: likewhat.TobaccoService.GetTobacco:output_type -> likewhat.Tobacco
+	4,  // 16: likewhat.TobaccoService.ListTobaccos:output_type -> likewhat.ListTobaccosResponse
+	6,  // 17: likewhat.ManufactureService.CreateManufacture:output_type -> likewhat.Manufacture
+	8,  // 18: likewhat.ManufactureService.ListManufactures:output_type -> likewhat.ListManufactureRespone
+	6,  // 19: likewhat.ManufactureService.EditManufacture:output_type -> likewhat.Manufacture
+	11, // 20: likewhat.ManufactureService.DeleteManufacture:output_type -> likewhat.DeleteManufactureResponse
+	14, // [14:21] is the sub-list for method output_type
+	7,  // [7:14] is the sub-list for method input_type
+	7,  // [7:7] is the sub-list for extension type_name
+	7,  // [7:7] is the sub-list for extension extendee
+	0,  // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_api_like_what_like_what_proto_init() }
@@ -454,9 +865,9 @@ func file_api_like_what_like_what_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_like_what_like_what_proto_rawDesc), len(file_api_like_what_like_what_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   13,
 			NumExtensions: 0,
-			NumServices:   1,
+			NumServices:   2,
 		},
 		GoTypes:           file_api_like_what_like_what_proto_goTypes,
 		DependencyIndexes: file_api_like_what_like_what_proto_depIdxs,

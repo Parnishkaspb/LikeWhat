@@ -5,6 +5,7 @@ import (
 	"errors"
 	"strings"
 
+	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/manufacture"
 	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/tobacco"
 	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/tobacco/repository"
 )
@@ -50,7 +51,7 @@ func (s *TobaccoService) Create(ctx context.Context, input CreateInput) (tobacco
 	return s.repository.Create(ctx, tobacco.Tobacco{
 		Taste: strings.TrimSpace(input.Taste),
 		Photo: strings.TrimSpace(input.Photo),
-		Manufacture: tobacco.Manufacture{
+		Manufacture: manufacture.Manufacture{
 			ID: manufactureID,
 		},
 	})

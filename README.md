@@ -46,3 +46,28 @@ make test
 Для генерации требуются `protoc`, `protoc-gen-go` и `protoc-gen-go-grpc`.
 Сгенерированные файлы помещаются в `pkg/like_what` и должны обновляться при
 каждом изменении `api/like_what/like_what.proto`.
+
+## PostgreSQL для разработки
+
+Локальная база описана в `docker-compose.yml` и запускается командой:
+
+```sh
+docker compose up -d
+```
+
+Она доступна по `localhost:5432` с базой `likewhat`, пользователем `likewhat`
+и паролем `likewhat_dev_password`. Данные сохраняются в Docker volume
+`likewhat_postgres-data`. Остановить контейнер можно командой
+`docker compose down`.
+
+Для применения миграций используется Goose:
+
+```sh
+make migrate-up
+```
+
+Откатить последнюю миграцию можно командой `make migrate-down`.
+
+SQL для PostgreSQL-репозиториев строится через `github.com/Masterminds/squirrel`
+с PostgreSQL-плейсхолдерами (`$1`, `$2`, …). Общий builder находится в
+`internal/platform/postgres`.

@@ -199,3 +199,219 @@ var TobaccoService_ServiceDesc = grpc.ServiceDesc{
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "api/like_what/like_what.proto",
 }
+
+const (
+	ManufactureService_CreateManufacture_FullMethodName = "/likewhat.ManufactureService/CreateManufacture"
+	ManufactureService_ListManufactures_FullMethodName  = "/likewhat.ManufactureService/ListManufactures"
+	ManufactureService_EditManufacture_FullMethodName   = "/likewhat.ManufactureService/EditManufacture"
+	ManufactureService_DeleteManufacture_FullMethodName = "/likewhat.ManufactureService/DeleteManufacture"
+)
+
+// ManufactureServiceClient is the client API for ManufactureService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type ManufactureServiceClient interface {
+	CreateManufacture(ctx context.Context, in *CreateManufactureRequest, opts ...grpc.CallOption) (*Manufacture, error)
+	ListManufactures(ctx context.Context, in *ListManufactureRequest, opts ...grpc.CallOption) (*ListManufactureRespone, error)
+	EditManufacture(ctx context.Context, in *EditManufactureRequest, opts ...grpc.CallOption) (*Manufacture, error)
+	DeleteManufacture(ctx context.Context, in *DeleteManufactureRequest, opts ...grpc.CallOption) (*DeleteManufactureResponse, error)
+}
+
+type manufactureServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewManufactureServiceClient(cc grpc.ClientConnInterface) ManufactureServiceClient {
+	return &manufactureServiceClient{cc}
+}
+
+func (c *manufactureServiceClient) CreateManufacture(ctx context.Context, in *CreateManufactureRequest, opts ...grpc.CallOption) (*Manufacture, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Manufacture)
+	err := c.cc.Invoke(ctx, ManufactureService_CreateManufacture_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *manufactureServiceClient) ListManufactures(ctx context.Context, in *ListManufactureRequest, opts ...grpc.CallOption) (*ListManufactureRespone, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListManufactureRespone)
+	err := c.cc.Invoke(ctx, ManufactureService_ListManufactures_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *manufactureServiceClient) EditManufacture(ctx context.Context, in *EditManufactureRequest, opts ...grpc.CallOption) (*Manufacture, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Manufacture)
+	err := c.cc.Invoke(ctx, ManufactureService_EditManufacture_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *manufactureServiceClient) DeleteManufacture(ctx context.Context, in *DeleteManufactureRequest, opts ...grpc.CallOption) (*DeleteManufactureResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteManufactureResponse)
+	err := c.cc.Invoke(ctx, ManufactureService_DeleteManufacture_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// ManufactureServiceServer is the server API for ManufactureService service.
+// All implementations must embed UnimplementedManufactureServiceServer
+// for forward compatibility.
+type ManufactureServiceServer interface {
+	CreateManufacture(context.Context, *CreateManufactureRequest) (*Manufacture, error)
+	ListManufactures(context.Context, *ListManufactureRequest) (*ListManufactureRespone, error)
+	EditManufacture(context.Context, *EditManufactureRequest) (*Manufacture, error)
+	DeleteManufacture(context.Context, *DeleteManufactureRequest) (*DeleteManufactureResponse, error)
+	mustEmbedUnimplementedManufactureServiceServer()
+}
+
+// UnimplementedManufactureServiceServer must be embedded to have
+// forward compatible implementations.
+//
+// NOTE: this should be embedded by value instead of pointer to avoid a nil
+// pointer dereference when methods are called.
+type UnimplementedManufactureServiceServer struct{}
+
+func (UnimplementedManufactureServiceServer) CreateManufacture(context.Context, *CreateManufactureRequest) (*Manufacture, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateManufacture not implemented")
+}
+func (UnimplementedManufactureServiceServer) ListManufactures(context.Context, *ListManufactureRequest) (*ListManufactureRespone, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListManufactures not implemented")
+}
+func (UnimplementedManufactureServiceServer) EditManufacture(context.Context, *EditManufactureRequest) (*Manufacture, error) {
+	return nil, status.Error(codes.Unimplemented, "method EditManufacture not implemented")
+}
+func (UnimplementedManufactureServiceServer) DeleteManufacture(context.Context, *DeleteManufactureRequest) (*DeleteManufactureResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteManufacture not implemented")
+}
+func (UnimplementedManufactureServiceServer) mustEmbedUnimplementedManufactureServiceServer() {}
+func (UnimplementedManufactureServiceServer) testEmbeddedByValue()                            {}
+
+// UnsafeManufactureServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to ManufactureServiceServer will
+// result in compilation errors.
+type UnsafeManufactureServiceServer interface {
+	mustEmbedUnimplementedManufactureServiceServer()
+}
+
+func RegisterManufactureServiceServer(s grpc.ServiceRegistrar, srv ManufactureServiceServer) {
+	// If the following call panics, it indicates UnimplementedManufactureServiceServer was
+	// embedded by pointer and is nil.  This will cause panics if an
+	// unimplemented method is ever invoked, so we test this at initialization
+	// time to prevent it from happening at runtime later due to I/O.
+	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
+		t.testEmbeddedByValue()
+	}
+	s.RegisterService(&ManufactureService_ServiceDesc, srv)
+}
+
+func _ManufactureService_CreateManufacture_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateManufactureRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ManufactureServiceServer).CreateManufacture(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ManufactureService_CreateManufacture_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ManufactureServiceServer).CreateManufacture(ctx, req.(*CreateManufactureRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ManufactureService_ListManufactures_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListManufactureRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ManufactureServiceServer).ListManufactures(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ManufactureService_ListManufactures_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ManufactureServiceServer).ListManufactures(ctx, req.(*ListManufactureRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ManufactureService_EditManufacture_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EditManufactureRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ManufactureServiceServer).EditManufacture(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ManufactureService_EditManufacture_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ManufactureServiceServer).EditManufacture(ctx, req.(*EditManufactureRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ManufactureService_DeleteManufacture_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteManufactureRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ManufactureServiceServer).DeleteManufacture(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ManufactureService_DeleteManufacture_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ManufactureServiceServer).DeleteManufacture(ctx, req.(*DeleteManufactureRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// ManufactureService_ServiceDesc is the grpc.ServiceDesc for ManufactureService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var ManufactureService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "likewhat.ManufactureService",
+	HandlerType: (*ManufactureServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateManufacture",
+			Handler:    _ManufactureService_CreateManufacture_Handler,
+		},
+		{
+			MethodName: "ListManufactures",
+			Handler:    _ManufactureService_ListManufactures_Handler,
+		},
+		{
+			MethodName: "EditManufacture",
+			Handler:    _ManufactureService_EditManufacture_Handler,
+		},
+		{
+			MethodName: "DeleteManufacture",
+			Handler:    _ManufactureService_DeleteManufacture_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "api/like_what/like_what.proto",
+}

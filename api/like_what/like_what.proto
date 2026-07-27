@@ -13,6 +13,13 @@ service TobaccoService {
   rpc ListTobaccos(ListTobaccosRequest) returns (ListTobaccosResponse);
 }
 
+service ManufactureService {
+  rpc CreateManufacture(CreateManufactureRequest) returns (Manufacture);
+  rpc ListManufactures(ListManufactureRequest) returns (ListManufactureRespone);
+  rpc EditManufacture(EditManufactureRequest) returns (Manufacture);
+  rpc DeleteManufacture(DeleteManufactureRequest) returns (DeleteManufactureResponse);
+}
+
 message Tobacco {
   string id = 1;
   string taste = 2;
@@ -29,11 +36,6 @@ message CreateTobaccoRequest {
   string manufacture_id = 3;
 }
 
-message Manufacture {
-  string id = 1;
-  string name = 2;
-}
-
 message GetTobaccoRequest {
   string id = 1;
 }
@@ -45,4 +47,45 @@ message ListTobaccosRequest {
 
 message ListTobaccosResponse {
   repeated Tobacco tobaccos = 1;
+}
+
+message CreateManufactureRequest {
+  string name = 1;
+}
+
+message Manufacture {
+  string id = 1;
+  string name = 2;
+}
+
+message ListManufactureRequest {
+  message Filter {
+    // Наименование производителя поиск
+    string name_like = 1;
+    // Поиск по идентификатору
+    repeated string ids_in = 2;
+  }
+  Filter filter = 1;
+  uint64 per_page = 2;
+  uint64 page = 3;
+}
+
+message ListManufactureRespone {
+  repeated Manufacture manufactures = 1;
+  uint64 total_count = 2;
+  bool next_page = 3;
+}
+
+message EditManufactureRequest {
+  string manufacture_id = 1;
+  string name = 2;
+}
+
+message DeleteManufactureRequest {
+  string manufacture_id = 1;
+}
+
+message DeleteManufactureResponse {
+  bool is_deleted = 1;
+  string message = 2;
 }
