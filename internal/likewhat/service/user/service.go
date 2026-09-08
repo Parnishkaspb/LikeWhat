@@ -4,12 +4,13 @@ import (
 	"context"
 	"strings"
 
-	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/db"
+	userstore "github.com/Parnishkaspb/LikeWhat/internal/likewhat/db/user"
+	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/errs"
 	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/models"
 )
 
 // ErrNotFound is returned when a user does not exist.
-var ErrNotFound = db.ErrNotFound
+var ErrNotFound = errs.ErrNotFound
 
 // CreateInput contains the business fields accepted when a user is created.
 type CreateInput struct {
@@ -26,10 +27,10 @@ type ListInput struct {
 // UserService contains user use cases and is independent of transports.
 // Input validation happens at the transport layer; this service only orchestrates.
 type UserService struct {
-	store *db.Store
+	store *userstore.Store
 }
 
-func NewUserService(store *db.Store) *UserService {
+func NewUserService(store *userstore.Store) *UserService {
 	return &UserService{store: store}
 }
 

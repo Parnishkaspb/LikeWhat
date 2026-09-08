@@ -4,12 +4,13 @@ import (
 	"context"
 	"strings"
 
-	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/db"
+	manufacturestore "github.com/Parnishkaspb/LikeWhat/internal/likewhat/db/manufacture"
+	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/errs"
 	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/models"
 )
 
 // ErrNotFound is returned when a manufacture does not exist.
-var ErrNotFound = db.ErrNotFound
+var ErrNotFound = errs.ErrNotFound
 
 // CreateInput contains the business fields accepted when a manufacture is created.
 type CreateInput struct {
@@ -33,10 +34,10 @@ type ListInput struct {
 // ManufactureService contains manufacture use cases and is independent of transports.
 // Input validation happens at the transport layer; this service only orchestrates.
 type ManufactureService struct {
-	store *db.Store
+	store *manufacturestore.Store
 }
 
-func NewManufactureService(store *db.Store) *ManufactureService {
+func NewManufactureService(store *manufacturestore.Store) *ManufactureService {
 	return &ManufactureService{store: store}
 }
 

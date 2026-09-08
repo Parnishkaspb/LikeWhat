@@ -6,12 +6,15 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/db"
+	recipestore "github.com/Parnishkaspb/LikeWhat/internal/likewhat/db/recipe"
+	tobaccostore "github.com/Parnishkaspb/LikeWhat/internal/likewhat/db/tobacco"
+	userstore "github.com/Parnishkaspb/LikeWhat/internal/likewhat/db/user"
+	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/errs"
 	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/models"
 )
 
 // ErrNotFound is returned when a recipe does not exist.
-var ErrNotFound = db.ErrNotFound
+var ErrNotFound = errs.ErrNotFound
 
 // RecipeTobaccoInput is one tobacco of the mix accepted on creation.
 type RecipeTobaccoInput struct {
@@ -44,11 +47,13 @@ type ListInput struct {
 // Input validation happens at the transport layer; this service enforces the
 // cross-field invariants a transport cannot know about.
 type RecipeService struct {
-	store *db.Store
+	store    *recipestore.Store
+	users    *userstore.Store
+	tobaccos *tobaccostore.Store
 }
 
-func NewRecipeService(store *db.Store) *RecipeService {
-	return &RecipeService{store: store}
+func NewRecipeService(store *recipestore.Store, users *userstore.Store, tobaccos *tobaccostore.Store) *RecipeService {
+	return &RecipeService{store: store, users: users, tobaccos: tobaccos}
 }
 
 func (s *RecipeService) Create(ctx context.Context, input CreateInput) (models.Recipe, error) {
@@ -108,11 +113,11 @@ func (s *RecipeService) Create(ctx context.Context, input CreateInput) (models.R
 	}
 
 	// Every tobacco of the mix and every referenced user must exist.
-	if _, err := s.store.GetUser(ctx, input.UserID); err != nil {
+	if _, err := s.users.GetUser(ctx, input.UserID); err != nil {
 		return models.Recipe{}, fmt.Errorf("recipe user %d: %w", input.UserID, err)
 	}
 	for _, id := range tobaccoIDs {
-		if _, err := s.store.GetTobacco(ctx, id); err != nil {
+		if _, err := s.tobaccos.GetTobacco(ctx, id); err != nil {
 			return models.Recipe{}, fmt.Errorf("recipe tobacco %q: %w", id, err)
 		}
 	}

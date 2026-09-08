@@ -5,7 +5,7 @@ PROTO_FILES := $(shell find api -name '*.proto' -type f)
 PROTOC_GEN_PATH := $(shell go env GOPATH)/bin
 GOOSE := $(shell go env GOPATH)/bin/goose
 MIGRATIONS_DIR := migrations
-DATABASE_URL ?= postgres://likewhat:likewhat_dev_password@localhost:5432/likewhat?sslmode=disable
+DATABASE_URL ?= postgres://likewhat:likewhat_dev_password@localhost:5433/likewhat?sslmode=disable
 
 MODULE := $(shell go list -m -f '{{.Path}}')
 PROTO_FILES := $(shell find api -name '*.proto' -type f)
@@ -25,7 +25,7 @@ test:
 	fi
 
 run-server:
-	go run ./cmd/server
+	DATABASE_URL="$(DATABASE_URL)" go run ./cmd/server
 
 run-client:
 	go run ./cmd/client

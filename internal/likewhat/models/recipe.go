@@ -21,7 +21,6 @@ const (
 	ColRecipeTobaccoTobaccoID = "tobacco_id"
 	ColRecipeTobaccoPercent   = "percent"
 
-	ColRecipeStepID        = "id"
 	ColRecipeStepRecipeID  = "recipe_id"
 	ColRecipeStepNumber    = "step_number"
 	ColRecipeStepTobaccoID = "tobacco_id"

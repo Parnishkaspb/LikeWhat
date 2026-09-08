@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/db"
+	tobaccostore "github.com/Parnishkaspb/LikeWhat/internal/likewhat/db/tobacco"
 	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/service/tobacco"
 	"github.com/Parnishkaspb/LikeWhat/internal/platform/postgres/testpostgres"
 	likewhat "github.com/Parnishkaspb/LikeWhat/pkg/like_what"
@@ -21,7 +22,7 @@ import (
 func TestMain(m *testing.M) { os.Exit(testpostgres.Main(m)) }
 
 func newServer() *Server {
-	return NewServer(service.NewTobaccoService(db.NewStore(db.NewClient(testpostgres.Pool()))))
+	return NewServer(service.NewTobaccoService(tobaccostore.NewStore(db.NewClient(testpostgres.Pool()))))
 }
 
 func Test_validationCreateTobaccoRequest(t *testing.T) {
