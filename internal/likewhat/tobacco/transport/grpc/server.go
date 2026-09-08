@@ -4,13 +4,16 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 
 	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/tobacco"
-	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/tobacco/repository"
 	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/tobacco/service"
+	appvalidation "github.com/Parnishkaspb/LikeWhat/internal/platform/validation"
 	likewhat "github.com/Parnishkaspb/LikeWhat/pkg/like_what"
-	validation "github.com/go-ozzo/ozzo-validation/v4"
+	"github.com/Parnishkaspb/LikeWhat/pkg/utils"
+	"github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
+	"github.com/samber/lo"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -27,44 +30,51 @@ func NewServer(service *service.TobaccoService) *Server {
 }
 
 func (s *Server) CreateTobacco(ctx context.Context, req *likewhat.CreateTobaccoRequest) (*likewhat.Tobacco, error) {
-	err := validationCreateTobaccoRequest(req)
-	if err != nil {
+	if err := validationCreateTobaccoRequest(req); err != nil {
 		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("validationCreateTobaccoRequest: %v", err))
 	}
 
 	item, err := s.service.Create(ctx, service.CreateInput{
-		Taste:         req.GetTaste(),
-		Photo:         req.GetPhoto(),
-		ManufactureID: req.GetManufactureId(),
+		Taste:         strings.TrimSpace(req.GetTaste()),
+		Photo:         strings.TrimSpace(req.GetPhoto()),
+		ManufactureID: strings.TrimSpace(req.GetManufactureId()),
 	})
 	if err != nil {
-		return nil, toStatusError(err)
+		return nil, utils.ToStatusError(err)
 	}
-	return toProto(item), nil
+	return serializeTobacco(item), nil
 }
 
 func validationCreateTobaccoRequest(req *likewhat.CreateTobaccoRequest) error {
 	if req == nil {
 		return errors.New("request is required")
 	}
-
-	return validation.ValidateStruct(
-		req,
-		validation.Field(&req.Taste, validation.Required),
-		validation.Field(&req.ManufactureId, validation.Required, is.UUID),
+	return validation.ValidateStruct(req,
+		validation.Field(&req.Taste, validation.Required, appvalidation.RequiredString()),
+		validation.Field(&req.ManufactureId, validation.Required, appvalidation.RequiredString(), is.UUID),
 	)
 }
 
 func (s *Server) GetTobacco(ctx context.Context, req *likewhat.GetTobaccoRequest) (*likewhat.Tobacco, error) {
-	if req == nil || req.GetId() == "" {
-		return nil, status.Error(codes.InvalidArgument, "id is required")
+	err := validationGetTobaccoRequest(req)
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("validationGetTobaccoRequest: %v", err))
 	}
-
 	item, err := s.service.Get(ctx, req.GetId())
 	if err != nil {
-		return nil, toStatusError(err)
+		return nil, utils.ToStatusError(err)
 	}
-	return toProto(item), nil
+	return serializeTobacco(item), nil
+}
+
+func validationGetTobaccoRequest(req *likewhat.GetTobaccoRequest) error {
+	if req == nil {
+		return errors.New("request is required")
+	}
+
+	return validation.ValidateStruct(req,
+		validation.Field(&req.Id, validation.Required, is.UUID, appvalidation.RequiredString()),
+	)
 }
 
 func (s *Server) ListTobaccos(ctx context.Context, req *likewhat.ListTobaccosRequest) (*likewhat.ListTobaccosResponse, error) {
@@ -72,26 +82,25 @@ func (s *Server) ListTobaccos(ctx context.Context, req *likewhat.ListTobaccosReq
 		req = &likewhat.ListTobaccosRequest{}
 	}
 
-	items, err := s.service.List(ctx, service.ListInput{
+	tobaccos, err := s.service.List(ctx, service.ListInput{
 		Taste:          req.GetTaste(),
 		ManufactureIDs: req.GetManufactureId(),
 	})
 	if err != nil {
-		return nil, toStatusError(err)
+		return nil, utils.ToStatusError(err)
 	}
 
-	result := make([]*likewhat.Tobacco, 0, len(items))
-	for _, item := range items {
-		result = append(result, toProto(item))
-	}
+	result := lo.Map(tobaccos, func(item tobacco.Tobacco, index int) *likewhat.Tobacco {
+		return serializeTobacco(item)
+	})
+
 	return &likewhat.ListTobaccosResponse{Tobaccos: result}, nil
 }
 
-func toProto(item tobacco.Tobacco) *likewhat.Tobacco {
+func serializeTobacco(item tobacco.Tobacco) *likewhat.Tobacco {
 	result := &likewhat.Tobacco{
 		Id:    item.ID,
 		Taste: item.Taste,
-		Proto: item.Proto,
 		Manufacture: &likewhat.Manufacture{
 			Id:   item.Manufacture.ID,
 			Name: item.Manufacture.Name,
@@ -107,19 +116,4 @@ func toProto(item tobacco.Tobacco) *likewhat.Tobacco {
 		result.DeletedAt = timestamppb.New(*item.DeletedAt)
 	}
 	return result
-}
-
-func toStatusError(err error) error {
-	switch {
-	case errors.Is(err, service.ErrTasteRequired), errors.Is(err, service.ErrManufactureRequired):
-		return status.Error(codes.InvalidArgument, err.Error())
-	case errors.Is(err, repository.ErrNotFound):
-		return status.Error(codes.NotFound, err.Error())
-	case errors.Is(err, context.Canceled):
-		return status.Error(codes.Canceled, err.Error())
-	case errors.Is(err, context.DeadlineExceeded):
-		return status.Error(codes.DeadlineExceeded, err.Error())
-	default:
-		return status.Error(codes.Internal, "internal server error")
-	}
 }

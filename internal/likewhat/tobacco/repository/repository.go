@@ -2,16 +2,17 @@ package repository
 
 import (
 	"context"
-	"errors"
 
-	"github.com/Parnishkaspb/LikeWhat/internal/models"
+	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/errs"
+	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/tobacco"
 )
 
-var ErrNotFound = errors.New("tobacco not found")
+// ErrNotFound is returned when a tobacco record does not exist.
+var ErrNotFound = errs.ErrNotFound
 
 // TobaccoRepository is the persistence boundary for tobacco records.
 type TobaccoRepository interface {
-	Create(context.Context, models.Tobacco) (models.Tobacco, error)
-	Get(context.Context, string) (models.Tobacco, error)
-	List(context.Context, models.ListFilter) ([]models.Tobacco, error)
+	Create(context.Context, tobacco.Tobacco) (tobacco.Tobacco, error)
+	Get(context.Context, string) (tobacco.Tobacco, error)
+	List(context.Context, tobacco.ListFilter) ([]tobacco.Tobacco, error)
 }
