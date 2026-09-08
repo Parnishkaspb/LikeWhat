@@ -13,9 +13,10 @@ service TobaccoService {
   rpc ListTobaccos(ListTobaccosRequest) returns (ListTobaccosResponse);
 }
 
+// ManufactureService manages producers of tobacco products.
 service ManufactureService {
   rpc CreateManufacture(CreateManufactureRequest) returns (Manufacture);
-  rpc ListManufactures(ListManufactureRequest) returns (ListManufactureRespone);
+  rpc ListManufactures(ListManufacturesRequest) returns (ListManufacturesResponse);
   rpc EditManufacture(EditManufactureRequest) returns (Manufacture);
   rpc DeleteManufacture(DeleteManufactureRequest) returns (DeleteManufactureResponse);
 }
@@ -23,7 +24,6 @@ service ManufactureService {
 message Tobacco {
   string id = 1;
   string taste = 2;
-  string proto = 3;
   Manufacture manufacture = 4;
   google.protobuf.Timestamp created_at = 5;
   google.protobuf.Timestamp updated_at = 6;
@@ -56,13 +56,16 @@ message CreateManufactureRequest {
 message Manufacture {
   string id = 1;
   string name = 2;
+  google.protobuf.Timestamp created_at = 3;
+  google.protobuf.Timestamp updated_at = 4;
+  google.protobuf.Timestamp deleted_at = 5;
 }
 
-message ListManufactureRequest {
+message ListManufacturesRequest {
   message Filter {
-    // Наименование производителя поиск
+    // Наименование производителя поиск.
     string name_like = 1;
-    // Поиск по идентификатору
+    // Поиск по идентификаторам.
     repeated string ids_in = 2;
   }
   Filter filter = 1;
@@ -70,19 +73,19 @@ message ListManufactureRequest {
   uint64 page = 3;
 }
 
-message ListManufactureRespone {
+message ListManufacturesResponse {
   repeated Manufacture manufactures = 1;
   uint64 total_count = 2;
   bool next_page = 3;
 }
 
 message EditManufactureRequest {
-  string manufacture_id = 1;
+  string id = 1;
   string name = 2;
 }
 
 message DeleteManufactureRequest {
-  string manufacture_id = 1;
+  string id = 1;
 }
 
 message DeleteManufactureResponse {

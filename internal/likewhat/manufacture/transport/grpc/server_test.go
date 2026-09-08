@@ -3,11 +3,13 @@ package transportgrpc
 import (
 	"context"
 	"net"
+	"os"
 	"testing"
 	"time"
 
-	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/tobacco/repository"
-	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/tobacco/service"
+	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/manufacture/repository"
+	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/manufacture/service"
+	"github.com/Parnishkaspb/LikeWhat/internal/platform/postgres/testpostgres"
 	likewhat "github.com/Parnishkaspb/LikeWhat/pkg/like_what"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -16,69 +18,61 @@ import (
 	"google.golang.org/grpc/test/bufconn"
 )
 
-func Test_validationCreateTobaccoRequest(t *testing.T) {
+func TestMain(m *testing.M) { os.Exit(testpostgres.Main(m)) }
+
+func newServer() *Server {
+	return NewServer(service.NewManufactureService(repository.NewPostgres(testpostgres.Pool())))
+}
+
+func Test_validationCreateManufactureRequest(t *testing.T) {
 	tests := []struct {
 		name string
-		req  *likewhat.CreateTobaccoRequest
-		want bool
+		req  *likewhat.CreateManufactureRequest
+		want bool // want error?
 	}{
-		{
-			name: "nil request",
-			req:  nil,
-			want: true,
-		},
-		{
-			name: "empty request",
-			req:  &likewhat.CreateTobaccoRequest{},
-			want: true,
-		},
-		{
-			name: "required taste",
-			req: &likewhat.CreateTobaccoRequest{
-				ManufactureId: "3422b448-2460-4fd2-9183-8000de6f8343",
-			},
-			want: true,
-		},
-		{
-			name: "required manufacture_id",
-			req: &likewhat.CreateTobaccoRequest{
-				Taste: "Черника",
-			},
-			want: true,
-		},
-		{
-			name: "invalid manufacture_id is not uuid",
-			req: &likewhat.CreateTobaccoRequest{
-				Taste:         "Черничный вкус",
-				ManufactureId: "123",
-			},
-			want: true,
-		},
-		{
-			name: "valid request",
-			req: &likewhat.CreateTobaccoRequest{
-				Taste:         "Черниный вкус",
-				ManufactureId: "3422b448-2460-4fd2-9183-8000de6f8343",
-			},
-			want: false,
-		},
+		{name: "nil request", req: nil, want: true},
+		{name: "empty request", req: &likewhat.CreateManufactureRequest{}, want: true},
+		{name: "whitespace only name", req: &likewhat.CreateManufactureRequest{Name: "   "}, want: true},
+		{name: "valid request", req: &likewhat.CreateManufactureRequest{Name: "Ozon"}, want: false},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			err := validationCreateTobaccoRequest(tt.req)
+			err := validationCreateManufactureRequest(tt.req)
 			if got := err != nil; got != tt.want {
-				t.Fatalf("validationCreateTobaccoRequest() error = %v, want error: %t", err, tt.want)
+				t.Fatalf("validationCreateManufactureRequest() error = %v, want error: %t", err, tt.want)
 			}
 		})
 	}
 }
 
-func TestTobaccoServiceOverGRPC(t *testing.T) {
-	t.Parallel()
+func Test_validationEditManufactureRequest(t *testing.T) {
+	tests := []struct {
+		name string
+		req  *likewhat.EditManufactureRequest
+		want bool // want error?
+	}{
+		{name: "nil request", req: nil, want: true},
+		{name: "missing id", req: &likewhat.EditManufactureRequest{Name: "Ozon"}, want: true},
+		{name: "missing name", req: &likewhat.EditManufactureRequest{Id: "1"}, want: true},
+		{name: "whitespace only name", req: &likewhat.EditManufactureRequest{Id: "1", Name: "   "}, want: true},
+		{name: "valid request", req: &likewhat.EditManufactureRequest{Id: "1", Name: "Ozon"}, want: false},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := validationEditManufactureRequest(tt.req)
+			if got := err != nil; got != tt.want {
+				t.Fatalf("validationEditManufactureRequest() error = %v, want error: %t", err, tt.want)
+			}
+		})
+	}
+}
+
+func TestManufactureServiceOverGRPC(t *testing.T) {
 	listener := bufconn.Listen(1024 * 1024)
 	grpcServer := grpc.NewServer()
-	likewhat.RegisterTobaccoServiceServer(grpcServer, NewServer(service.NewTobaccoService(repository.NewMemory())))
+	likewhat.RegisterManufactureServiceServer(grpcServer, newServer())
 	go func() { _ = grpcServer.Serve(listener) }()
 	t.Cleanup(grpcServer.Stop)
 
@@ -93,21 +87,38 @@ func TestTobaccoServiceOverGRPC(t *testing.T) {
 	}
 	t.Cleanup(func() { _ = conn.Close() })
 
-	client := likewhat.NewTobaccoServiceClient(conn)
-	created, err := client.CreateTobacco(ctx, &likewhat.CreateTobaccoRequest{Taste: "Vanilla", ManufactureId: "3422b448-2460-4fd2-9183-8000de6f8343"})
+	client := likewhat.NewManufactureServiceClient(conn)
+
+	created, err := client.CreateManufacture(ctx, &likewhat.CreateManufactureRequest{Name: "Ozon"})
 	if err != nil {
-		t.Fatalf("CreateTobacco() error = %v", err)
+		t.Fatalf("CreateManufacture() error = %v", err)
 	}
-	if created.GetId() != "tobacco-1" || created.GetManufacture().GetId() != "3422b448-2460-4fd2-9183-8000de6f8343" {
-		t.Fatalf("CreateTobacco() = %+v", created)
-	}
-
-	items, err := client.ListTobaccos(ctx, &likewhat.ListTobaccosRequest{Taste: "vanilla"})
-	if err != nil || len(items.GetTobaccos()) != 1 {
-		t.Fatalf("ListTobaccos() = %+v, %v; want one item", items, err)
+	if created.GetId() == "" || created.GetName() != "Ozon" {
+		t.Fatalf("CreateManufacture() = %+v", created)
 	}
 
-	if _, err := client.GetTobacco(ctx, &likewhat.GetTobaccoRequest{Id: "missing"}); status.Code(err) != codes.NotFound {
-		t.Fatalf("GetTobacco() code = %s, want NotFound", status.Code(err))
+	if _, err := client.CreateManufacture(ctx, &likewhat.CreateManufactureRequest{}); status.Code(err) != codes.InvalidArgument {
+		t.Fatalf("CreateManufacture(empty name) code = %s, want InvalidArgument", status.Code(err))
+	}
+
+	edited, err := client.EditManufacture(ctx, &likewhat.EditManufactureRequest{Id: created.GetId(), Name: "Ozon Force"})
+	if err != nil || edited.GetName() != "Ozon Force" {
+		t.Fatalf("EditManufacture() = %+v, %v", edited, err)
+	}
+
+	list, err := client.ListManufactures(ctx, &likewhat.ListManufacturesRequest{
+		Filter: &likewhat.ListManufacturesRequest_Filter{NameLike: "ozon"},
+	})
+	if err != nil || list.GetTotalCount() != 1 || len(list.GetManufactures()) != 1 {
+		t.Fatalf("ListManufactures() = %+v, %v", list, err)
+	}
+
+	if _, err := client.DeleteManufacture(ctx, &likewhat.DeleteManufactureRequest{Id: created.GetId()}); err != nil {
+		t.Fatalf("DeleteManufacture() error = %v", err)
+	}
+
+	list, err = client.ListManufactures(ctx, &likewhat.ListManufacturesRequest{})
+	if err != nil || list.GetTotalCount() != 0 {
+		t.Fatalf("ListManufactures() after delete = %+v, %v; want 0", list, err)
 	}
 }
