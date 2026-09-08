@@ -10,8 +10,15 @@ DATABASE_URL ?= postgres://likewhat:likewhat_dev_password@localhost:5432/likewha
 generate:
 	PATH="$(PROTOC_GEN_PATH):$(PATH)" protoc -I . --go_out=. --go_opt=module=$(MODULE) --go-grpc_out=. --go-grpc_opt=module=$(MODULE) $(PROTO_FILES)
 
+# DB-backed tests need a reachable Docker daemon. Colima exposes one on a
+# unix socket; testcontainers will pick up DOCKER_HOST when it is unset.
 test:
-	go test ./...
+	@if [ -z "$$DOCKER_HOST" ] && [ -S "$$HOME/.colima/default/docker.sock" ]; then \
+		echo "using colima docker socket $$HOME/.colima/default/docker.sock"; \
+		DOCKER_HOST="unix://$$HOME/.colima/default/docker.sock" go test ./...; \
+	else \
+		go test ./...; \
+	fi
 
 run-server:
 	go run ./cmd/server
