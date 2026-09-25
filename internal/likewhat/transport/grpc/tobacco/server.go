@@ -82,6 +82,10 @@ func (s *Server) ListTobaccos(ctx context.Context, req *likewhat.ListTobaccosReq
 		req = &likewhat.ListTobaccosRequest{}
 	}
 
+	if err := validationIdsIn(req.GetManufactureId()); err != nil {
+		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("ListTobaccos: %v", err))
+	}
+
 	tobaccos, err := s.service.List(ctx, service.ListInput{
 		Taste:          req.GetTaste(),
 		ManufactureIDs: req.GetManufactureId(),
@@ -97,10 +101,22 @@ func (s *Server) ListTobaccos(ctx context.Context, req *likewhat.ListTobaccosReq
 	return &likewhat.ListTobaccosResponse{Tobaccos: result}, nil
 }
 
+// validationIdsIn checks that every identifier in a list filter is a non-empty
+// UUID, so a malformed value fails with InvalidArgument instead of a DB error.
+func validationIdsIn(ids []string) error {
+	for _, id := range ids {
+		if err := validation.Validate(id, validation.Required, is.UUID); err != nil {
+			return fmt.Errorf("manufacture_id: %w", err)
+		}
+	}
+	return nil
+}
+
 func serializeTobacco(item models.Tobacco) *likewhat.Tobacco {
 	result := &likewhat.Tobacco{
 		Id:    item.ID,
 		Taste: item.Taste,
+		Photo: item.Photo,
 		Manufacture: &likewhat.Manufacture{
 			Id:   item.Manufacture.ID,
 			Name: item.Manufacture.Name,

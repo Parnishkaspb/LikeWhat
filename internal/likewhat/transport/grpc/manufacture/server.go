@@ -19,6 +19,9 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+// defaultPerPage is the page size used when a client does not request one.
+const defaultPerPage = 20
+
 // Server adapts manufacture use cases to the generated gRPC contract.
 type Server struct {
 	likewhat.UnimplementedManufactureServiceServer
@@ -46,12 +49,26 @@ func (s *Server) ListManufactures(ctx context.Context, req *likewhat.ListManufac
 		req = &likewhat.ListManufacturesRequest{}
 	}
 
+	const maxPerPage = 100
+	perPage := req.GetPerPage()
+	if perPage == 0 {
+		perPage = defaultPerPage
+	}
+	if perPage > maxPerPage {
+		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("ListManufactures: per_page must not exceed %d", maxPerPage))
+	}
+
 	filter := req.GetFilter()
+	page := max(req.GetPage(), 1)
+
+	if err := validationIdsIn(filter.GetIdsIn()); err != nil {
+		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("ListManufactures: %v", err))
+	}
 
 	manufactures, total, err := s.service.List(ctx, service.ListInput{
 		NameLike: filter.GetNameLike(),
 		IDs:      filter.GetIdsIn(),
-		Page:     req.GetPage(),
+		Page:     page,
 		PerPage:  req.GetPerPage(),
 	})
 	if err != nil {
@@ -65,7 +82,9 @@ func (s *Server) ListManufactures(ctx context.Context, req *likewhat.ListManufac
 	return &likewhat.ListManufacturesResponse{
 		Manufactures: result,
 		TotalCount:   uint64(total),
-		NextPage:     uint64(len(manufactures)) < req.GetPerPage(),
+		// There is a next page while the fetched page does not reach the end
+		// of the matched set.
+		NextPage: uint64(page)*req.GetPerPage()+uint64(len(manufactures)) < uint64(total),
 	}, nil
 }
 
@@ -119,9 +138,20 @@ func validationEditManufactureRequest(req *likewhat.EditManufactureRequest) erro
 		return errors.New("request is required")
 	}
 	return validation.ValidateStruct(req,
-		validation.Field(&req.Id, validation.Required),
+		validation.Field(&req.Id, validation.Required, is.UUID),
 		validation.Field(&req.Name, validation.Required, appvalidation.RequiredString()),
 	)
+}
+
+// validationIdsIn checks that every identifier in a list filter is a non-empty
+// UUID, so a malformed value fails with InvalidArgument instead of a DB error.
+func validationIdsIn(ids []string) error {
+	for _, id := range ids {
+		if err := validation.Validate(id, validation.Required, is.UUID); err != nil {
+			return fmt.Errorf("ids_in: %w", err)
+		}
+	}
+	return nil
 }
 
 func serializeManufacture(item models.Manufacture) *likewhat.Manufacture {

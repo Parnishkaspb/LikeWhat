@@ -11,9 +11,11 @@ import (
 
 	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/db"
 	manufactureservice "github.com/Parnishkaspb/LikeWhat/internal/likewhat/service/manufacture"
+	recipeservice "github.com/Parnishkaspb/LikeWhat/internal/likewhat/service/recipe"
 	tobaccoservice "github.com/Parnishkaspb/LikeWhat/internal/likewhat/service/tobacco"
 	userservice "github.com/Parnishkaspb/LikeWhat/internal/likewhat/service/user"
 	manufacturetransport "github.com/Parnishkaspb/LikeWhat/internal/likewhat/transport/grpc/manufacture"
+	recipetransport "github.com/Parnishkaspb/LikeWhat/internal/likewhat/transport/grpc/recipe"
 	tobacotransport "github.com/Parnishkaspb/LikeWhat/internal/likewhat/transport/grpc/tobacco"
 	usertransport "github.com/Parnishkaspb/LikeWhat/internal/likewhat/transport/grpc/user"
 	likewhat "github.com/Parnishkaspb/LikeWhat/pkg/like_what"
@@ -21,6 +23,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
 	grpc_health_v1 "google.golang.org/grpc/health/grpc_health_v1"
+	"google.golang.org/grpc/reflection"
 )
 
 func main() {
@@ -57,7 +60,11 @@ func main() {
 	likewhat.RegisterTobaccoServiceServer(server, tobacotransport.NewServer(tobaccoservice.NewTobaccoService(store)))
 	likewhat.RegisterManufactureServiceServer(server, manufacturetransport.NewServer(manufactureservice.NewManufactureService(store)))
 	likewhat.RegisterUserServiceServer(server, usertransport.NewServer(userservice.NewUserService(store)))
+	likewhat.RegisterRecipeServiceServer(server, recipetransport.NewServer(recipeservice.NewRecipeService(store)))
 	grpc_health_v1.RegisterHealthServer(server, health.NewServer())
+	// Serve reflection so tools like grpcurl and GraphQL gateways can
+	// introspect the API without the compiled proto.
+	reflection.Register(server)
 
 	go func() {
 		log.Printf("gRPC server listening on %s", address)

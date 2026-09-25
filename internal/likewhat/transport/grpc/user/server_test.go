@@ -113,4 +113,8 @@ func TestUserServiceOverGRPC(t *testing.T) {
 	if err != nil || len(list.GetUsers()) != 1 {
 		t.Fatalf("ListUsers() = %+v, %v; want one user", list, err)
 	}
+
+	if _, err := client.CreateUser(ctx, &likewhat.CreateUserRequest{TelegramId: 111, NickName: "nick2", Name: "Jane"}); status.Code(err) != codes.AlreadyExists {
+		t.Fatalf("CreateUser(duplicate telegram_id) code = %s, want AlreadyExists", status.Code(err))
+	}
 }

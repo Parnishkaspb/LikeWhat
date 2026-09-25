@@ -98,4 +98,17 @@ func TestTobaccoServiceOverGRPC(t *testing.T) {
 	if _, err := client.GetTobacco(ctx, &likewhat.GetTobaccoRequest{Id: "00000000-0000-0000-0000-000000000000"}); status.Code(err) != codes.NotFound {
 		t.Fatalf("GetTobacco() code = %s, want NotFound", status.Code(err))
 	}
+
+	if _, err := client.CreateTobacco(ctx, &likewhat.CreateTobaccoRequest{Taste: "Vanilla", ManufactureId: "00000000-0000-0000-0000-000000000000"}); status.Code(err) != codes.NotFound {
+		t.Fatalf("CreateTobacco(unknown manufacture) code = %s, want NotFound", status.Code(err))
+	}
+
+	if _, err := client.ListTobaccos(ctx, &likewhat.ListTobaccosRequest{ManufactureId: []string{"not-a-uuid"}}); status.Code(err) != codes.InvalidArgument {
+		t.Fatalf("ListTobaccos(bad manufacture_id) code = %s, want InvalidArgument", status.Code(err))
+	}
+
+	got, err := client.GetTobacco(ctx, &likewhat.GetTobaccoRequest{Id: created.GetId()})
+	if err != nil || got.GetManufacture().GetName() != "Ozon" {
+		t.Fatalf("GetTobacco() = %+v, %v; want manufacture name Ozon", got, err)
+	}
 }

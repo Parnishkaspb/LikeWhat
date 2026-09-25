@@ -6,6 +6,7 @@ import (
 	"errors"
 
 	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/errs"
+	"github.com/jackc/pgx/v5/pgconn"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -23,6 +24,17 @@ func ToStatusError(err error) error {
 	case errors.Is(err, context.DeadlineExceeded):
 		return status.Error(codes.DeadlineExceeded, err.Error())
 	default:
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) {
+			// SQLSTATE 23505: unique constraint violation.
+			if pgErr.Code == "23505" {
+				return status.Error(codes.AlreadyExists, "entity already exists")
+			}
+			// SQLSTATE 23503: foreign key violation.
+			if pgErr.Code == "23503" {
+				return status.Error(codes.InvalidArgument, "referenced entity does not exist")
+			}
+		}
 		return status.Error(codes.Internal, "internal server error")
 	}
 }

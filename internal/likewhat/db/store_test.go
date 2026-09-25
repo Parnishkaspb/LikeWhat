@@ -40,6 +40,15 @@ func TestUserLifecycle(t *testing.T) {
 		t.Fatalf("ListUsers() = %+v, %v; want one John", items, err)
 	}
 
+	// LIKE wildcards in input are matched literally, not as wildcards.
+	if _, err := st.CreateUser(ctx, models.User{TelegramID: 555, NickName: "x", Name: "100% sure"}); err != nil {
+		t.Fatalf("CreateUser() percent name error = %v", err)
+	}
+	items, err = st.ListUsers(ctx, models.UserFilter{NameLike: "100% sure"})
+	if err != nil || len(items) != 1 || items[0].Name != "100% sure" {
+		t.Fatalf("ListUsers(percent) = %+v, %v; want literal percent match", items, err)
+	}
+
 	if _, err := st.GetUser(ctx, 999999); !errors.Is(err, ErrNotFound) {
 		t.Fatalf("GetUser(missing) error = %v, want ErrNotFound", err)
 	}
@@ -75,6 +84,9 @@ func TestTobaccoLifecycle(t *testing.T) {
 	got, err := st.GetTobacco(ctx, created.ID)
 	if err != nil || got.Taste != "Vanilla" || got.Manufacture.ID != mID {
 		t.Fatalf("GetTobacco() = %+v, %v", got, err)
+	}
+	if got.Manufacture.Name != "Ozon" {
+		t.Fatalf("GetTobacco().Manufacture.Name = %q, want Ozon", got.Manufacture.Name)
 	}
 
 	if _, err := st.CreateTobacco(ctx, models.Tobacco{Taste: "Cherry", Manufacture: models.Manufacture{ID: mID}}); err != nil {

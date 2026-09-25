@@ -26,6 +26,7 @@ type Tobacco struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Taste         string                 `protobuf:"bytes,2,opt,name=taste,proto3" json:"taste,omitempty"`
+	Photo         string                 `protobuf:"bytes,3,opt,name=photo,proto3" json:"photo,omitempty"`
 	Manufacture   *Manufacture           `protobuf:"bytes,4,opt,name=manufacture,proto3" json:"manufacture,omitempty"`
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
@@ -74,6 +75,13 @@ func (x *Tobacco) GetId() string {
 func (x *Tobacco) GetTaste() string {
 	if x != nil {
 		return x.Taste
+	}
+	return ""
+}
+
+func (x *Tobacco) GetPhoto() string {
+	if x != nil {
+		return x.Photo
 	}
 	return ""
 }
@@ -946,6 +954,422 @@ func (x *ListUsersResponse) GetUsers() []*User {
 	return nil
 }
 
+type Recipe struct {
+	state  protoimpl.MessageState `protogen:"open.v1"`
+	Id     string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	UserId int64                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Title  string                 `protobuf:"bytes,3,opt,name=title,proto3" json:"title,omitempty"`
+	// Composition of the mix: which tobacco and in which percentage.
+	Tobaccos []*RecipeTobacco `protobuf:"bytes,4,rep,name=tobaccos,proto3" json:"tobaccos,omitempty"`
+	// Ordered preparation steps.
+	Steps         []*RecipeStep          `protobuf:"bytes,5,rep,name=steps,proto3" json:"steps,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	DeletedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=deleted_at,json=deletedAt,proto3" json:"deleted_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Recipe) Reset() {
+	*x = Recipe{}
+	mi := &file_api_like_what_like_what_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Recipe) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Recipe) ProtoMessage() {}
+
+func (x *Recipe) ProtoReflect() protoreflect.Message {
+	mi := &file_api_like_what_like_what_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Recipe.ProtoReflect.Descriptor instead.
+func (*Recipe) Descriptor() ([]byte, []int) {
+	return file_api_like_what_like_what_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *Recipe) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *Recipe) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *Recipe) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *Recipe) GetTobaccos() []*RecipeTobacco {
+	if x != nil {
+		return x.Tobaccos
+	}
+	return nil
+}
+
+func (x *Recipe) GetSteps() []*RecipeStep {
+	if x != nil {
+		return x.Steps
+	}
+	return nil
+}
+
+func (x *Recipe) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *Recipe) GetUpdatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return nil
+}
+
+func (x *Recipe) GetDeletedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DeletedAt
+	}
+	return nil
+}
+
+type RecipeTobacco struct {
+	state     protoimpl.MessageState `protogen:"open.v1"`
+	TobaccoId string                 `protobuf:"bytes,1,opt,name=tobacco_id,json=tobaccoId,proto3" json:"tobacco_id,omitempty"`
+	// Percentage of the tobacco in the mix, e.g. 33.33.
+	Percent       float64 `protobuf:"fixed64,2,opt,name=percent,proto3" json:"percent,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RecipeTobacco) Reset() {
+	*x = RecipeTobacco{}
+	mi := &file_api_like_what_like_what_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RecipeTobacco) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RecipeTobacco) ProtoMessage() {}
+
+func (x *RecipeTobacco) ProtoReflect() protoreflect.Message {
+	mi := &file_api_like_what_like_what_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RecipeTobacco.ProtoReflect.Descriptor instead.
+func (*RecipeTobacco) Descriptor() ([]byte, []int) {
+	return file_api_like_what_like_what_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *RecipeTobacco) GetTobaccoId() string {
+	if x != nil {
+		return x.TobaccoId
+	}
+	return ""
+}
+
+func (x *RecipeTobacco) GetPercent() float64 {
+	if x != nil {
+		return x.Percent
+	}
+	return 0
+}
+
+type RecipeStep struct {
+	state      protoimpl.MessageState `protogen:"open.v1"`
+	StepNumber int64                  `protobuf:"varint,1,opt,name=step_number,json=stepNumber,proto3" json:"step_number,omitempty"`
+	// Tobacco the step refers to; empty when the step concerns the whole mix.
+	TobaccoId     string `protobuf:"bytes,2,opt,name=tobacco_id,json=tobaccoId,proto3" json:"tobacco_id,omitempty"`
+	WhatDo        string `protobuf:"bytes,3,opt,name=what_do,json=whatDo,proto3" json:"what_do,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RecipeStep) Reset() {
+	*x = RecipeStep{}
+	mi := &file_api_like_what_like_what_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RecipeStep) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RecipeStep) ProtoMessage() {}
+
+func (x *RecipeStep) ProtoReflect() protoreflect.Message {
+	mi := &file_api_like_what_like_what_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RecipeStep.ProtoReflect.Descriptor instead.
+func (*RecipeStep) Descriptor() ([]byte, []int) {
+	return file_api_like_what_like_what_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *RecipeStep) GetStepNumber() int64 {
+	if x != nil {
+		return x.StepNumber
+	}
+	return 0
+}
+
+func (x *RecipeStep) GetTobaccoId() string {
+	if x != nil {
+		return x.TobaccoId
+	}
+	return ""
+}
+
+func (x *RecipeStep) GetWhatDo() string {
+	if x != nil {
+		return x.WhatDo
+	}
+	return ""
+}
+
+type CreateRecipeRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	Tobaccos      []*RecipeTobacco       `protobuf:"bytes,3,rep,name=tobaccos,proto3" json:"tobaccos,omitempty"`
+	Steps         []*RecipeStep          `protobuf:"bytes,4,rep,name=steps,proto3" json:"steps,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateRecipeRequest) Reset() {
+	*x = CreateRecipeRequest{}
+	mi := &file_api_like_what_like_what_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateRecipeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateRecipeRequest) ProtoMessage() {}
+
+func (x *CreateRecipeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_like_what_like_what_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateRecipeRequest.ProtoReflect.Descriptor instead.
+func (*CreateRecipeRequest) Descriptor() ([]byte, []int) {
+	return file_api_like_what_like_what_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *CreateRecipeRequest) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *CreateRecipeRequest) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *CreateRecipeRequest) GetTobaccos() []*RecipeTobacco {
+	if x != nil {
+		return x.Tobaccos
+	}
+	return nil
+}
+
+func (x *CreateRecipeRequest) GetSteps() []*RecipeStep {
+	if x != nil {
+		return x.Steps
+	}
+	return nil
+}
+
+type GetRecipeRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetRecipeRequest) Reset() {
+	*x = GetRecipeRequest{}
+	mi := &file_api_like_what_like_what_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetRecipeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetRecipeRequest) ProtoMessage() {}
+
+func (x *GetRecipeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_like_what_like_what_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetRecipeRequest.ProtoReflect.Descriptor instead.
+func (*GetRecipeRequest) Descriptor() ([]byte, []int) {
+	return file_api_like_what_like_what_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *GetRecipeRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type ListRecipesRequest struct {
+	state         protoimpl.MessageState     `protogen:"open.v1"`
+	Filter        *ListRecipesRequest_Filter `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListRecipesRequest) Reset() {
+	*x = ListRecipesRequest{}
+	mi := &file_api_like_what_like_what_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListRecipesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListRecipesRequest) ProtoMessage() {}
+
+func (x *ListRecipesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_like_what_like_what_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListRecipesRequest.ProtoReflect.Descriptor instead.
+func (*ListRecipesRequest) Descriptor() ([]byte, []int) {
+	return file_api_like_what_like_what_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *ListRecipesRequest) GetFilter() *ListRecipesRequest_Filter {
+	if x != nil {
+		return x.Filter
+	}
+	return nil
+}
+
+type ListRecipesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Recipes       []*Recipe              `protobuf:"bytes,1,rep,name=recipes,proto3" json:"recipes,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListRecipesResponse) Reset() {
+	*x = ListRecipesResponse{}
+	mi := &file_api_like_what_like_what_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListRecipesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListRecipesResponse) ProtoMessage() {}
+
+func (x *ListRecipesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_like_what_like_what_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListRecipesResponse.ProtoReflect.Descriptor instead.
+func (*ListRecipesResponse) Descriptor() ([]byte, []int) {
+	return file_api_like_what_like_what_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *ListRecipesResponse) GetRecipes() []*Recipe {
+	if x != nil {
+		return x.Recipes
+	}
+	return nil
+}
+
 type ListManufacturesRequest_Filter struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Наименование производителя поиск.
@@ -958,7 +1382,7 @@ type ListManufacturesRequest_Filter struct {
 
 func (x *ListManufacturesRequest_Filter) Reset() {
 	*x = ListManufacturesRequest_Filter{}
-	mi := &file_api_like_what_like_what_proto_msgTypes[17]
+	mi := &file_api_like_what_like_what_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -970,7 +1394,7 @@ func (x *ListManufacturesRequest_Filter) String() string {
 func (*ListManufacturesRequest_Filter) ProtoMessage() {}
 
 func (x *ListManufacturesRequest_Filter) ProtoReflect() protoreflect.Message {
-	mi := &file_api_like_what_like_what_proto_msgTypes[17]
+	mi := &file_api_like_what_like_what_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1000,14 +1424,69 @@ func (x *ListManufacturesRequest_Filter) GetIdsIn() []string {
 	return nil
 }
 
+type ListRecipesRequest_Filter struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Filter by author.
+	UserId int64 `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	// Filter by tobacco in the mix.
+	TobaccoIdIn   []string `protobuf:"bytes,2,rep,name=tobacco_id_in,json=tobaccoIdIn,proto3" json:"tobacco_id_in,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListRecipesRequest_Filter) Reset() {
+	*x = ListRecipesRequest_Filter{}
+	mi := &file_api_like_what_like_what_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListRecipesRequest_Filter) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListRecipesRequest_Filter) ProtoMessage() {}
+
+func (x *ListRecipesRequest_Filter) ProtoReflect() protoreflect.Message {
+	mi := &file_api_like_what_like_what_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListRecipesRequest_Filter.ProtoReflect.Descriptor instead.
+func (*ListRecipesRequest_Filter) Descriptor() ([]byte, []int) {
+	return file_api_like_what_like_what_proto_rawDescGZIP(), []int{22, 0}
+}
+
+func (x *ListRecipesRequest_Filter) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *ListRecipesRequest_Filter) GetTobaccoIdIn() []string {
+	if x != nil {
+		return x.TobaccoIdIn
+	}
+	return nil
+}
+
 var File_api_like_what_like_what_proto protoreflect.FileDescriptor
 
 const file_api_like_what_like_what_proto_rawDesc = "" +
 	"\n" +
-	"\x1dapi/like_what/like_what.proto\x12\blikewhat\x1a\x1fgoogle/protobuf/timestamp.proto\"\x99\x02\n" +
+	"\x1dapi/like_what/like_what.proto\x12\blikewhat\x1a\x1fgoogle/protobuf/timestamp.proto\"\xaf\x02\n" +
 	"\aTobacco\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
-	"\x05taste\x18\x02 \x01(\tR\x05taste\x127\n" +
+	"\x05taste\x18\x02 \x01(\tR\x05taste\x12\x14\n" +
+	"\x05photo\x18\x03 \x01(\tR\x05photo\x127\n" +
 	"\vmanufacture\x18\x04 \x01(\v2\x15.likewhat.ManufactureR\vmanufacture\x129\n" +
 	"\n" +
 	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
@@ -1073,7 +1552,44 @@ const file_api_like_what_like_what_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\"\x12\n" +
 	"\x10ListUsersRequest\"9\n" +
 	"\x11ListUsersResponse\x12$\n" +
-	"\x05users\x18\x01 \x03(\v2\x0e.likewhat.UserR\x05users2\xe1\x01\n" +
+	"\x05users\x18\x01 \x03(\v2\x0e.likewhat.UserR\x05users\"\xd9\x02\n" +
+	"\x06Recipe\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x17\n" +
+	"\auser_id\x18\x02 \x01(\x03R\x06userId\x12\x14\n" +
+	"\x05title\x18\x03 \x01(\tR\x05title\x123\n" +
+	"\btobaccos\x18\x04 \x03(\v2\x17.likewhat.RecipeTobaccoR\btobaccos\x12*\n" +
+	"\x05steps\x18\x05 \x03(\v2\x14.likewhat.RecipeStepR\x05steps\x129\n" +
+	"\n" +
+	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"\n" +
+	"updated_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\x129\n" +
+	"\n" +
+	"deleted_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tdeletedAt\"H\n" +
+	"\rRecipeTobacco\x12\x1d\n" +
+	"\n" +
+	"tobacco_id\x18\x01 \x01(\tR\ttobaccoId\x12\x18\n" +
+	"\apercent\x18\x02 \x01(\x01R\apercent\"e\n" +
+	"\n" +
+	"RecipeStep\x12\x1f\n" +
+	"\vstep_number\x18\x01 \x01(\x03R\n" +
+	"stepNumber\x12\x1d\n" +
+	"\n" +
+	"tobacco_id\x18\x02 \x01(\tR\ttobaccoId\x12\x17\n" +
+	"\awhat_do\x18\x03 \x01(\tR\x06whatDo\"\xa5\x01\n" +
+	"\x13CreateRecipeRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\x12\x14\n" +
+	"\x05title\x18\x02 \x01(\tR\x05title\x123\n" +
+	"\btobaccos\x18\x03 \x03(\v2\x17.likewhat.RecipeTobaccoR\btobaccos\x12*\n" +
+	"\x05steps\x18\x04 \x03(\v2\x14.likewhat.RecipeStepR\x05steps\"\"\n" +
+	"\x10GetRecipeRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"\x98\x01\n" +
+	"\x12ListRecipesRequest\x12;\n" +
+	"\x06filter\x18\x01 \x01(\v2#.likewhat.ListRecipesRequest.FilterR\x06filter\x1aE\n" +
+	"\x06Filter\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\x12\"\n" +
+	"\rtobacco_id_in\x18\x02 \x03(\tR\vtobaccoIdIn\"A\n" +
+	"\x13ListRecipesResponse\x12*\n" +
+	"\arecipes\x18\x01 \x03(\v2\x10.likewhat.RecipeR\arecipes2\xe1\x01\n" +
 	"\x0eTobaccoService\x12B\n" +
 	"\rCreateTobacco\x12\x1e.likewhat.CreateTobaccoRequest\x1a\x11.likewhat.Tobacco\x12<\n" +
 	"\n" +
@@ -1088,7 +1604,11 @@ const file_api_like_what_like_what_proto_rawDesc = "" +
 	"\n" +
 	"CreateUser\x12\x1b.likewhat.CreateUserRequest\x1a\x0e.likewhat.User\x123\n" +
 	"\aGetUser\x12\x18.likewhat.GetUserRequest\x1a\x0e.likewhat.User\x12D\n" +
-	"\tListUsers\x12\x1a.likewhat.ListUsersRequest\x1a\x1b.likewhat.ListUsersResponseB9Z7github.com/Parnishkaspb/LikeWhat/pkg/like_what;likewhatb\x06proto3"
+	"\tListUsers\x12\x1a.likewhat.ListUsersRequest\x1a\x1b.likewhat.ListUsersResponse2\xd7\x01\n" +
+	"\rRecipeService\x12?\n" +
+	"\fCreateRecipe\x12\x1d.likewhat.CreateRecipeRequest\x1a\x10.likewhat.Recipe\x129\n" +
+	"\tGetRecipe\x12\x1a.likewhat.GetRecipeRequest\x1a\x10.likewhat.Recipe\x12J\n" +
+	"\vListRecipes\x12\x1c.likewhat.ListRecipesRequest\x1a\x1d.likewhat.ListRecipesResponseB9Z7github.com/Parnishkaspb/LikeWhat/pkg/like_what;likewhatb\x06proto3"
 
 var (
 	file_api_like_what_like_what_proto_rawDescOnce sync.Once
@@ -1102,7 +1622,7 @@ func file_api_like_what_like_what_proto_rawDescGZIP() []byte {
 	return file_api_like_what_like_what_proto_rawDescData
 }
 
-var file_api_like_what_like_what_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
+var file_api_like_what_like_what_proto_msgTypes = make([]protoimpl.MessageInfo, 26)
 var file_api_like_what_like_what_proto_goTypes = []any{
 	(*Tobacco)(nil),                        // 0: likewhat.Tobacco
 	(*CreateTobaccoRequest)(nil),           // 1: likewhat.CreateTobaccoRequest
@@ -1121,46 +1641,69 @@ var file_api_like_what_like_what_proto_goTypes = []any{
 	(*GetUserRequest)(nil),                 // 14: likewhat.GetUserRequest
 	(*ListUsersRequest)(nil),               // 15: likewhat.ListUsersRequest
 	(*ListUsersResponse)(nil),              // 16: likewhat.ListUsersResponse
-	(*ListManufacturesRequest_Filter)(nil), // 17: likewhat.ListManufacturesRequest.Filter
-	(*timestamppb.Timestamp)(nil),          // 18: google.protobuf.Timestamp
+	(*Recipe)(nil),                         // 17: likewhat.Recipe
+	(*RecipeTobacco)(nil),                  // 18: likewhat.RecipeTobacco
+	(*RecipeStep)(nil),                     // 19: likewhat.RecipeStep
+	(*CreateRecipeRequest)(nil),            // 20: likewhat.CreateRecipeRequest
+	(*GetRecipeRequest)(nil),               // 21: likewhat.GetRecipeRequest
+	(*ListRecipesRequest)(nil),             // 22: likewhat.ListRecipesRequest
+	(*ListRecipesResponse)(nil),            // 23: likewhat.ListRecipesResponse
+	(*ListManufacturesRequest_Filter)(nil), // 24: likewhat.ListManufacturesRequest.Filter
+	(*ListRecipesRequest_Filter)(nil),      // 25: likewhat.ListRecipesRequest.Filter
+	(*timestamppb.Timestamp)(nil),          // 26: google.protobuf.Timestamp
 }
 var file_api_like_what_like_what_proto_depIdxs = []int32{
 	6,  // 0: likewhat.Tobacco.manufacture:type_name -> likewhat.Manufacture
-	18, // 1: likewhat.Tobacco.created_at:type_name -> google.protobuf.Timestamp
-	18, // 2: likewhat.Tobacco.updated_at:type_name -> google.protobuf.Timestamp
-	18, // 3: likewhat.Tobacco.deleted_at:type_name -> google.protobuf.Timestamp
+	26, // 1: likewhat.Tobacco.created_at:type_name -> google.protobuf.Timestamp
+	26, // 2: likewhat.Tobacco.updated_at:type_name -> google.protobuf.Timestamp
+	26, // 3: likewhat.Tobacco.deleted_at:type_name -> google.protobuf.Timestamp
 	0,  // 4: likewhat.ListTobaccosResponse.tobaccos:type_name -> likewhat.Tobacco
-	18, // 5: likewhat.Manufacture.created_at:type_name -> google.protobuf.Timestamp
-	18, // 6: likewhat.Manufacture.updated_at:type_name -> google.protobuf.Timestamp
-	18, // 7: likewhat.Manufacture.deleted_at:type_name -> google.protobuf.Timestamp
-	17, // 8: likewhat.ListManufacturesRequest.filter:type_name -> likewhat.ListManufacturesRequest.Filter
+	26, // 5: likewhat.Manufacture.created_at:type_name -> google.protobuf.Timestamp
+	26, // 6: likewhat.Manufacture.updated_at:type_name -> google.protobuf.Timestamp
+	26, // 7: likewhat.Manufacture.deleted_at:type_name -> google.protobuf.Timestamp
+	24, // 8: likewhat.ListManufacturesRequest.filter:type_name -> likewhat.ListManufacturesRequest.Filter
 	6,  // 9: likewhat.ListManufacturesResponse.manufactures:type_name -> likewhat.Manufacture
 	12, // 10: likewhat.ListUsersResponse.users:type_name -> likewhat.User
-	1,  // 11: likewhat.TobaccoService.CreateTobacco:input_type -> likewhat.CreateTobaccoRequest
-	2,  // 12: likewhat.TobaccoService.GetTobacco:input_type -> likewhat.GetTobaccoRequest
-	3,  // 13: likewhat.TobaccoService.ListTobaccos:input_type -> likewhat.ListTobaccosRequest
-	5,  // 14: likewhat.ManufactureService.CreateManufacture:input_type -> likewhat.CreateManufactureRequest
-	7,  // 15: likewhat.ManufactureService.ListManufactures:input_type -> likewhat.ListManufacturesRequest
-	9,  // 16: likewhat.ManufactureService.EditManufacture:input_type -> likewhat.EditManufactureRequest
-	10, // 17: likewhat.ManufactureService.DeleteManufacture:input_type -> likewhat.DeleteManufactureRequest
-	13, // 18: likewhat.UserService.CreateUser:input_type -> likewhat.CreateUserRequest
-	14, // 19: likewhat.UserService.GetUser:input_type -> likewhat.GetUserRequest
-	15, // 20: likewhat.UserService.ListUsers:input_type -> likewhat.ListUsersRequest
-	0,  // 21: likewhat.TobaccoService.CreateTobacco:output_type -> likewhat.Tobacco
-	0,  // 22: likewhat.TobaccoService.GetTobacco:output_type -> likewhat.Tobacco
-	4,  // 23: likewhat.TobaccoService.ListTobaccos:output_type -> likewhat.ListTobaccosResponse
-	6,  // 24: likewhat.ManufactureService.CreateManufacture:output_type -> likewhat.Manufacture
-	8,  // 25: likewhat.ManufactureService.ListManufactures:output_type -> likewhat.ListManufacturesResponse
-	6,  // 26: likewhat.ManufactureService.EditManufacture:output_type -> likewhat.Manufacture
-	11, // 27: likewhat.ManufactureService.DeleteManufacture:output_type -> likewhat.DeleteManufactureResponse
-	12, // 28: likewhat.UserService.CreateUser:output_type -> likewhat.User
-	12, // 29: likewhat.UserService.GetUser:output_type -> likewhat.User
-	16, // 30: likewhat.UserService.ListUsers:output_type -> likewhat.ListUsersResponse
-	21, // [21:31] is the sub-list for method output_type
-	11, // [11:21] is the sub-list for method input_type
-	11, // [11:11] is the sub-list for extension type_name
-	11, // [11:11] is the sub-list for extension extendee
-	0,  // [0:11] is the sub-list for field type_name
+	18, // 11: likewhat.Recipe.tobaccos:type_name -> likewhat.RecipeTobacco
+	19, // 12: likewhat.Recipe.steps:type_name -> likewhat.RecipeStep
+	26, // 13: likewhat.Recipe.created_at:type_name -> google.protobuf.Timestamp
+	26, // 14: likewhat.Recipe.updated_at:type_name -> google.protobuf.Timestamp
+	26, // 15: likewhat.Recipe.deleted_at:type_name -> google.protobuf.Timestamp
+	18, // 16: likewhat.CreateRecipeRequest.tobaccos:type_name -> likewhat.RecipeTobacco
+	19, // 17: likewhat.CreateRecipeRequest.steps:type_name -> likewhat.RecipeStep
+	25, // 18: likewhat.ListRecipesRequest.filter:type_name -> likewhat.ListRecipesRequest.Filter
+	17, // 19: likewhat.ListRecipesResponse.recipes:type_name -> likewhat.Recipe
+	1,  // 20: likewhat.TobaccoService.CreateTobacco:input_type -> likewhat.CreateTobaccoRequest
+	2,  // 21: likewhat.TobaccoService.GetTobacco:input_type -> likewhat.GetTobaccoRequest
+	3,  // 22: likewhat.TobaccoService.ListTobaccos:input_type -> likewhat.ListTobaccosRequest
+	5,  // 23: likewhat.ManufactureService.CreateManufacture:input_type -> likewhat.CreateManufactureRequest
+	7,  // 24: likewhat.ManufactureService.ListManufactures:input_type -> likewhat.ListManufacturesRequest
+	9,  // 25: likewhat.ManufactureService.EditManufacture:input_type -> likewhat.EditManufactureRequest
+	10, // 26: likewhat.ManufactureService.DeleteManufacture:input_type -> likewhat.DeleteManufactureRequest
+	13, // 27: likewhat.UserService.CreateUser:input_type -> likewhat.CreateUserRequest
+	14, // 28: likewhat.UserService.GetUser:input_type -> likewhat.GetUserRequest
+	15, // 29: likewhat.UserService.ListUsers:input_type -> likewhat.ListUsersRequest
+	20, // 30: likewhat.RecipeService.CreateRecipe:input_type -> likewhat.CreateRecipeRequest
+	21, // 31: likewhat.RecipeService.GetRecipe:input_type -> likewhat.GetRecipeRequest
+	22, // 32: likewhat.RecipeService.ListRecipes:input_type -> likewhat.ListRecipesRequest
+	0,  // 33: likewhat.TobaccoService.CreateTobacco:output_type -> likewhat.Tobacco
+	0,  // 34: likewhat.TobaccoService.GetTobacco:output_type -> likewhat.Tobacco
+	4,  // 35: likewhat.TobaccoService.ListTobaccos:output_type -> likewhat.ListTobaccosResponse
+	6,  // 36: likewhat.ManufactureService.CreateManufacture:output_type -> likewhat.Manufacture
+	8,  // 37: likewhat.ManufactureService.ListManufactures:output_type -> likewhat.ListManufacturesResponse
+	6,  // 38: likewhat.ManufactureService.EditManufacture:output_type -> likewhat.Manufacture
+	11, // 39: likewhat.ManufactureService.DeleteManufacture:output_type -> likewhat.DeleteManufactureResponse
+	12, // 40: likewhat.UserService.CreateUser:output_type -> likewhat.User
+	12, // 41: likewhat.UserService.GetUser:output_type -> likewhat.User
+	16, // 42: likewhat.UserService.ListUsers:output_type -> likewhat.ListUsersResponse
+	17, // 43: likewhat.RecipeService.CreateRecipe:output_type -> likewhat.Recipe
+	17, // 44: likewhat.RecipeService.GetRecipe:output_type -> likewhat.Recipe
+	23, // 45: likewhat.RecipeService.ListRecipes:output_type -> likewhat.ListRecipesResponse
+	33, // [33:46] is the sub-list for method output_type
+	20, // [20:33] is the sub-list for method input_type
+	20, // [20:20] is the sub-list for extension type_name
+	20, // [20:20] is the sub-list for extension extendee
+	0,  // [0:20] is the sub-list for field type_name
 }
 
 func init() { file_api_like_what_like_what_proto_init() }
@@ -1174,9 +1717,9 @@ func file_api_like_what_like_what_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_like_what_like_what_proto_rawDesc), len(file_api_like_what_like_what_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   18,
+			NumMessages:   26,
 			NumExtensions: 0,
-			NumServices:   3,
+			NumServices:   4,
 		},
 		GoTypes:           file_api_like_what_like_what_proto_goTypes,
 		DependencyIndexes: file_api_like_what_like_what_proto_depIdxs,

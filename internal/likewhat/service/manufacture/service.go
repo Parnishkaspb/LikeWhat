@@ -51,10 +51,28 @@ func (s *ManufactureService) Get(ctx context.Context, id string) (models.Manufac
 func (s *ManufactureService) List(ctx context.Context, input ListInput) ([]models.Manufacture, int, error) {
 	return s.store.ListManufactures(ctx, models.ManufactureFilter{
 		NameLike: strings.TrimSpace(input.NameLike),
-		IDs:      input.IDs,
+		IDs:      normalizeIDs(input.IDs),
 		Page:     input.Page,
 		PerPage:  input.PerPage,
 	})
+}
+
+// normalizeIDs trims and de-duplicates an identifier list.
+func normalizeIDs(ids []string) []string {
+	result := make([]string, 0, len(ids))
+	seen := make(map[string]struct{}, len(ids))
+	for _, id := range ids {
+		id = strings.TrimSpace(id)
+		if id == "" {
+			continue
+		}
+		if _, ok := seen[id]; ok {
+			continue
+		}
+		seen[id] = struct{}{}
+		result = append(result, id)
+	}
+	return result
 }
 
 func (s *ManufactureService) Update(ctx context.Context, input UpdateInput) (models.Manufacture, error) {

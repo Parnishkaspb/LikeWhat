@@ -54,9 +54,10 @@ func Test_validationEditManufactureRequest(t *testing.T) {
 	}{
 		{name: "nil request", req: nil, want: true},
 		{name: "missing id", req: &likewhat.EditManufactureRequest{Name: "Ozon"}, want: true},
-		{name: "missing name", req: &likewhat.EditManufactureRequest{Id: "1"}, want: true},
-		{name: "whitespace only name", req: &likewhat.EditManufactureRequest{Id: "1", Name: "   "}, want: true},
-		{name: "valid request", req: &likewhat.EditManufactureRequest{Id: "1", Name: "Ozon"}, want: false},
+		{name: "missing name", req: &likewhat.EditManufactureRequest{Id: "3422b448-2460-4fd2-9183-8000de6f8343"}, want: true},
+		{name: "not uuid id", req: &likewhat.EditManufactureRequest{Id: "1", Name: "Ozon"}, want: true},
+		{name: "whitespace only name", req: &likewhat.EditManufactureRequest{Id: "3422b448-2460-4fd2-9183-8000de6f8343", Name: "   "}, want: true},
+		{name: "valid request", req: &likewhat.EditManufactureRequest{Id: "3422b448-2460-4fd2-9183-8000de6f8343", Name: "Ozon"}, want: false},
 	}
 
 	for _, tt := range tests {
@@ -120,5 +121,46 @@ func TestManufactureServiceOverGRPC(t *testing.T) {
 	list, err = client.ListManufactures(ctx, &likewhat.ListManufacturesRequest{})
 	if err != nil || list.GetTotalCount() != 0 {
 		t.Fatalf("ListManufactures() after delete = %+v, %v; want 0", list, err)
+	}
+}
+
+func TestListManufacturesNextPage(t *testing.T) {
+	t.Parallel()
+	listener := bufconn.Listen(1024 * 1024)
+	grpcServer := grpc.NewServer()
+	likewhat.RegisterManufactureServiceServer(grpcServer, newServer())
+	go func() { _ = grpcServer.Serve(listener) }()
+	t.Cleanup(grpcServer.Stop)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	conn, err := grpc.DialContext(ctx, "bufnet",
+		grpc.WithContextDialer(func(context.Context, string) (net.Conn, error) { return listener.Dial() }),
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	)
+	if err != nil {
+		t.Fatalf("DialContext() error = %v", err)
+	}
+	t.Cleanup(func() { _ = conn.Close() })
+	client := likewhat.NewManufactureServiceClient(conn)
+
+	for i := 0; i < 3; i++ {
+		if _, err := client.CreateManufacture(ctx, &likewhat.CreateManufactureRequest{Name: "M"}); err != nil {
+			t.Fatalf("CreateManufacture() error = %v", err)
+		}
+	}
+
+	list, err := client.ListManufactures(ctx, &likewhat.ListManufacturesRequest{PerPage: 2})
+	if err != nil || len(list.GetManufactures()) != 2 || !list.GetNextPage() {
+		t.Fatalf("ListManufactures(page=1,per=2) = %+v, %v; want 2 items and next_page", list, err)
+	}
+
+	list, err = client.ListManufactures(ctx, &likewhat.ListManufacturesRequest{PerPage: 2, Page: 2})
+	if err != nil || len(list.GetManufactures()) != 1 || list.GetNextPage() {
+		t.Fatalf("ListManufactures(page=2,per=2) = %+v, %v; want 1 item and no next_page", list, err)
+	}
+
+	if _, err := client.ListManufactures(ctx, &likewhat.ListManufacturesRequest{PerPage: 101}); status.Code(err) != codes.InvalidArgument {
+		t.Fatalf("ListManufactures(per_page=101) code = %s, want InvalidArgument", status.Code(err))
 	}
 }
