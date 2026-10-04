@@ -16,7 +16,7 @@ func main() {
 	address := flag.String("addr", "localhost:50051", "gRPC server address")
 	taste := flag.String("taste", "vanilla", "tobacco taste")
 	photo := flag.String("photo", "", "photo URL")
-	manufactureID := flag.String("manufacture-id", "manufacturer-1", "manufacture identifier")
+	manufactureID := flag.String("manufacture-id", "00000000-0000-0000-0000-000000000001", "manufacture identifier (UUID)")
 	flag.Parse()
 
 	conn, err := grpc.NewClient(*address, grpc.WithTransportCredentials(insecure.NewCredentials()))

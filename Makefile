@@ -7,6 +7,10 @@ GOOSE := $(shell go env GOPATH)/bin/goose
 MIGRATIONS_DIR := migrations
 DATABASE_URL ?= postgres://likewhat:likewhat_dev_password@localhost:5432/likewhat?sslmode=disable
 
+MODULE := $(shell go list -m -f '{{.Path}}')
+PROTO_FILES := $(shell find api -name '*.proto' -type f)
+PROTOC_GEN_PATH := $(shell go env GOPATH)/bin
+
 generate:
 	PATH="$(PROTOC_GEN_PATH):$(PATH)" protoc -I . --go_out=. --go_opt=module=$(MODULE) --go-grpc_out=. --go-grpc_opt=module=$(MODULE) $(PROTO_FILES)
 

@@ -21,9 +21,24 @@ service ManufactureService {
   rpc DeleteManufacture(DeleteManufactureRequest) returns (DeleteManufactureResponse);
 }
 
+// UserService manages chat users.
+service UserService {
+  rpc CreateUser(CreateUserRequest) returns (User);
+  rpc GetUser(GetUserRequest) returns (User);
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse);
+}
+
+// RecipeService manages hookah recipes mixing tobaccos and preparation steps.
+service RecipeService {
+  rpc CreateRecipe(CreateRecipeRequest) returns (Recipe);
+  rpc GetRecipe(GetRecipeRequest) returns (Recipe);
+  rpc ListRecipes(ListRecipesRequest) returns (ListRecipesResponse);
+}
+
 message Tobacco {
   string id = 1;
   string taste = 2;
+  string photo = 3;
   Manufacture manufacture = 4;
   google.protobuf.Timestamp created_at = 5;
   google.protobuf.Timestamp updated_at = 6;
@@ -91,4 +106,78 @@ message DeleteManufactureRequest {
 message DeleteManufactureResponse {
   bool is_deleted = 1;
   string message = 2;
+}
+
+message User {
+  int64 id = 1;
+  int64 telegram_id = 2;
+  string nick_name = 3;
+  string name = 4;
+}
+
+message CreateUserRequest {
+  int64 telegram_id = 1;
+  string nick_name = 2;
+  string name = 3;
+}
+
+message GetUserRequest {
+  int64 id = 1;
+}
+
+message ListUsersRequest {}
+
+message ListUsersResponse {
+  repeated User users = 1;
+}
+
+message Recipe {
+  string id = 1;
+  int64 user_id = 2;
+  string title = 3;
+  // Composition of the mix: which tobacco and in which percentage.
+  repeated RecipeTobacco tobaccos = 4;
+  // Ordered preparation steps.
+  repeated RecipeStep steps = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+  google.protobuf.Timestamp deleted_at = 8;
+}
+
+message RecipeTobacco {
+  string tobacco_id = 1;
+  // Percentage of the tobacco in the mix, e.g. 33.33.
+  double percent = 2;
+}
+
+message RecipeStep {
+  int64 step_number = 1;
+  // Tobacco the step refers to; empty when the step concerns the whole mix.
+  string tobacco_id = 2;
+  string what_do = 3;
+}
+
+message CreateRecipeRequest {
+  int64 user_id = 1;
+  string title = 2;
+  repeated RecipeTobacco tobaccos = 3;
+  repeated RecipeStep steps = 4;
+}
+
+message GetRecipeRequest {
+  string id = 1;
+}
+
+message ListRecipesRequest {
+  message Filter {
+    // Filter by author.
+    int64 user_id = 1;
+    // Filter by tobacco in the mix.
+    repeated string tobacco_id_in = 2;
+  }
+  Filter filter = 1;
+}
+
+message ListRecipesResponse {
+  repeated Recipe recipes = 1;
 }
