@@ -7,13 +7,14 @@ import (
 	"testing"
 
 	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/db"
+	manufacturestore "github.com/Parnishkaspb/LikeWhat/internal/likewhat/db/manufacture"
 	"github.com/Parnishkaspb/LikeWhat/internal/platform/postgres/testpostgres"
 )
 
 func TestMain(m *testing.M) { os.Exit(testpostgres.Main(m)) }
 
 func newSvc() *ManufactureService {
-	return NewManufactureService(db.NewStore(db.NewClient(testpostgres.Pool())))
+	return NewManufactureService(manufacturestore.NewStore(db.NewClient(testpostgres.Pool())))
 }
 
 func TestCreateNormalizesInput(t *testing.T) {

@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/db"
+	tobaccostore "github.com/Parnishkaspb/LikeWhat/internal/likewhat/db/tobacco"
 	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/models"
 )
 
@@ -24,10 +24,10 @@ type ListInput struct {
 // TobaccoService contains tobacco use cases and is independent of transports.
 // Input validation happens at the transport layer; this service only orchestrates.
 type TobaccoService struct {
-	store *db.Store
+	store *tobaccostore.Store
 }
 
-func NewTobaccoService(store *db.Store) *TobaccoService {
+func NewTobaccoService(store *tobaccostore.Store) *TobaccoService {
 	return &TobaccoService{store: store}
 }
 

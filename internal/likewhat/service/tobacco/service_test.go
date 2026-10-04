@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/db"
+	tobaccostore "github.com/Parnishkaspb/LikeWhat/internal/likewhat/db/tobacco"
 	"github.com/Parnishkaspb/LikeWhat/internal/platform/postgres/testpostgres"
 )
 
@@ -13,7 +14,7 @@ func TestMain(m *testing.M) { os.Exit(testpostgres.Main(m)) }
 
 func newSvc(t *testing.T) *TobaccoService {
 	t.Helper()
-	return NewTobaccoService(db.NewStore(db.NewClient(testpostgres.Pool())))
+	return NewTobaccoService(tobaccostore.NewStore(db.NewClient(testpostgres.Pool())))
 }
 
 // createManufacture inserts a manufacture row directly, because a tobacco

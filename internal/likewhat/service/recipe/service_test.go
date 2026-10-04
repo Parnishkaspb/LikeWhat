@@ -6,6 +6,9 @@ import (
 	"testing"
 
 	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/db"
+	recipestore "github.com/Parnishkaspb/LikeWhat/internal/likewhat/db/recipe"
+	tobaccostore "github.com/Parnishkaspb/LikeWhat/internal/likewhat/db/tobacco"
+	userstore "github.com/Parnishkaspb/LikeWhat/internal/likewhat/db/user"
 	"github.com/Parnishkaspb/LikeWhat/internal/platform/postgres/testpostgres"
 )
 
@@ -13,7 +16,8 @@ func TestMain(m *testing.M) { os.Exit(testpostgres.Main(m)) }
 
 func newSvc(t *testing.T) *RecipeService {
 	t.Helper()
-	return NewRecipeService(db.NewStore(db.NewClient(testpostgres.Pool())))
+	client := db.NewClient(testpostgres.Pool())
+	return NewRecipeService(recipestore.NewStore(client), userstore.NewStore(client), tobaccostore.NewStore(client))
 }
 
 // createUser inserts a user row directly, because a recipe requires a user

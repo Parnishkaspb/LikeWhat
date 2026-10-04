@@ -8,7 +8,9 @@ services:
       POSTGRES_USER: likewhat
       POSTGRES_PASSWORD: likewhat_dev_password
     ports:
-      - "5432:5432"
+      # 5432 on the host is taken by a local postgres / ssh tunnel, so the
+      # container is published on 5433 instead.
+      - "5433:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:

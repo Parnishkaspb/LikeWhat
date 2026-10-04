@@ -6,13 +6,14 @@ import (
 	"testing"
 
 	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/db"
+	userstore "github.com/Parnishkaspb/LikeWhat/internal/likewhat/db/user"
 	"github.com/Parnishkaspb/LikeWhat/internal/platform/postgres/testpostgres"
 )
 
 func TestMain(m *testing.M) { os.Exit(testpostgres.Main(m)) }
 
 func newSvc() *UserService {
-	return NewUserService(db.NewStore(db.NewClient(testpostgres.Pool())))
+	return NewUserService(userstore.NewStore(db.NewClient(testpostgres.Pool())))
 }
 
 func TestCreateNormalizesInput(t *testing.T) {

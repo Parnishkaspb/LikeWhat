@@ -6,17 +6,19 @@ package db
 import (
 	"context"
 	"errors"
+	"strings"
 	"time"
 
+	"github.com/Masterminds/squirrel"
 	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/errs"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-// queryTimeout bounds every store query independently of the incoming
+// QueryTimeout bounds every store query independently of the incoming
 // request context, so a slow statement cannot hold a request forever.
-const queryTimeout = 5 * time.Second
+const QueryTimeout = 5 * time.Second
 
 // Client owns the pgx connection pool and exposes the query primitives
 // repositories need, hiding the concrete pool type behind one object.
@@ -43,14 +45,14 @@ func (r *Row) Scan(dest ...any) error {
 // QueryRow runs a one-row query. Rows that do not match anything surface as
 // errs.ErrNotFound via NotFound, so every repository returns the same sentinel.
 func (c *Client) QueryRow(ctx context.Context, query string, args ...any) *Row {
-	ctx, cancel := context.WithTimeout(ctx, queryTimeout)
+	ctx, cancel := context.WithTimeout(ctx, QueryTimeout)
 	return &Row{row: c.pool.QueryRow(ctx, query, args...), cancel: cancel}
 }
 
 // Query runs a multi-row query. The returned rows carry the timeout context;
 // it is released when the caller closes the rows.
 func (c *Client) Query(ctx context.Context, query string, args ...any) (pgx.Rows, error) {
-	ctx, cancel := context.WithTimeout(ctx, queryTimeout)
+	ctx, cancel := context.WithTimeout(ctx, QueryTimeout)
 	rows, err := c.pool.Query(ctx, query, args...)
 	if err != nil {
 		cancel()
@@ -71,9 +73,15 @@ func (r *Rows) Close() {
 }
 
 func (c *Client) Exec(ctx context.Context, query string, args ...any) (pgconn.CommandTag, error) {
-	ctx, cancel := context.WithTimeout(ctx, queryTimeout)
+	ctx, cancel := context.WithTimeout(ctx, QueryTimeout)
 	defer cancel()
 	return c.pool.Exec(ctx, query, args...)
+}
+
+// Begin starts a transaction. The caller owns the timeout context and the
+// commit/rollback lifecycle.
+func (c *Client) Begin(ctx context.Context) (pgx.Tx, error) {
+	return c.pool.Begin(ctx)
 }
 
 // ErrNotFound is the sentinel returned by Store methods when a record is missing.
@@ -86,4 +94,17 @@ func NotFound(err error) error {
 		return errs.ErrNotFound
 	}
 	return err
+}
+
+// escapeLike escapes the LIKE wildcard characters of a user-supplied pattern,
+// so "%", "_" and "\" in input are matched literally.
+func escapeLike(pattern string) string {
+	r := strings.NewReplacer(`\`, `\\`, `%`, `\%`, `_`, `\_`)
+	return r.Replace(pattern)
+}
+
+// ILikeExpr builds an ILIKE condition with an explicit escape character,
+// because squirrel.Like cannot emit ESCAPE itself.
+func ILikeExpr(column, pattern string) squirrel.Sqlizer {
+	return squirrel.Expr(column+" ILIKE ? ESCAPE '\\'", "%"+escapeLike(pattern)+"%")
 }

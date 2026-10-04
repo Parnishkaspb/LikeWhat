@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/db"
+	userstore "github.com/Parnishkaspb/LikeWhat/internal/likewhat/db/user"
 	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/service/user"
 	"github.com/Parnishkaspb/LikeWhat/internal/platform/postgres/testpostgres"
 	likewhat "github.com/Parnishkaspb/LikeWhat/pkg/like_what"
@@ -21,7 +22,7 @@ import (
 func TestMain(m *testing.M) { os.Exit(testpostgres.Main(m)) }
 
 func newServer() *Server {
-	return NewServer(service.NewUserService(db.NewStore(db.NewClient(testpostgres.Pool()))))
+	return NewServer(service.NewUserService(userstore.NewStore(db.NewClient(testpostgres.Pool()))))
 }
 
 func Test_validationCreateUserRequest(t *testing.T) {

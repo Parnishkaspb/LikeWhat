@@ -10,6 +10,10 @@ import (
 	"time"
 
 	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/db"
+	manufacturestore "github.com/Parnishkaspb/LikeWhat/internal/likewhat/db/manufacture"
+	recipestore "github.com/Parnishkaspb/LikeWhat/internal/likewhat/db/recipe"
+	tobaccostore "github.com/Parnishkaspb/LikeWhat/internal/likewhat/db/tobacco"
+	userstore "github.com/Parnishkaspb/LikeWhat/internal/likewhat/db/user"
 	manufactureservice "github.com/Parnishkaspb/LikeWhat/internal/likewhat/service/manufacture"
 	recipeservice "github.com/Parnishkaspb/LikeWhat/internal/likewhat/service/recipe"
 	tobaccoservice "github.com/Parnishkaspb/LikeWhat/internal/likewhat/service/tobacco"
@@ -54,13 +58,15 @@ func main() {
 		log.Fatalf("connect database: %v", err)
 	}
 
-	store := db.NewStore(db.NewClient(pool))
+	client := db.NewClient(pool)
 
 	server := grpc.NewServer()
-	likewhat.RegisterTobaccoServiceServer(server, tobacotransport.NewServer(tobaccoservice.NewTobaccoService(store)))
-	likewhat.RegisterManufactureServiceServer(server, manufacturetransport.NewServer(manufactureservice.NewManufactureService(store)))
-	likewhat.RegisterUserServiceServer(server, usertransport.NewServer(userservice.NewUserService(store)))
-	likewhat.RegisterRecipeServiceServer(server, recipetransport.NewServer(recipeservice.NewRecipeService(store)))
+	likewhat.RegisterTobaccoServiceServer(server, tobacotransport.NewServer(tobaccoservice.NewTobaccoService(tobaccostore.NewStore(client))))
+	likewhat.RegisterManufactureServiceServer(server, manufacturetransport.NewServer(manufactureservice.NewManufactureService(manufacturestore.NewStore(client))))
+	likewhat.RegisterUserServiceServer(server, usertransport.NewServer(userservice.NewUserService(userstore.NewStore(client))))
+	likewhat.RegisterRecipeServiceServer(server, recipetransport.NewServer(recipeservice.NewRecipeService(
+		recipestore.NewStore(client), userstore.NewStore(client), tobaccostore.NewStore(client),
+	)))
 	grpc_health_v1.RegisterHealthServer(server, health.NewServer())
 	// Serve reflection so tools like grpcurl and GraphQL gateways can
 	// introspect the API without the compiled proto.

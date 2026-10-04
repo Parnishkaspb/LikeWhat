@@ -8,6 +8,9 @@ import (
 	"time"
 
 	"github.com/Parnishkaspb/LikeWhat/internal/likewhat/db"
+	recipestore "github.com/Parnishkaspb/LikeWhat/internal/likewhat/db/recipe"
+	tobaccostore "github.com/Parnishkaspb/LikeWhat/internal/likewhat/db/tobacco"
+	userstore "github.com/Parnishkaspb/LikeWhat/internal/likewhat/db/user"
 	recipeservice "github.com/Parnishkaspb/LikeWhat/internal/likewhat/service/recipe"
 	"github.com/Parnishkaspb/LikeWhat/internal/platform/postgres/testpostgres"
 	likewhat "github.com/Parnishkaspb/LikeWhat/pkg/like_what"
@@ -21,7 +24,8 @@ import (
 func TestMain(m *testing.M) { os.Exit(testpostgres.Main(m)) }
 
 func newServer() *Server {
-	return NewServer(recipeservice.NewRecipeService(db.NewStore(db.NewClient(testpostgres.Pool()))))
+	client := db.NewClient(testpostgres.Pool())
+	return NewServer(recipeservice.NewRecipeService(recipestore.NewStore(client), userstore.NewStore(client), tobaccostore.NewStore(client)))
 }
 
 func Test_validationCreateRecipeRequest(t *testing.T) {
